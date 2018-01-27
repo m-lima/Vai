@@ -38,7 +38,7 @@ STRING(REGEX REPLACE "\\\\" "/" ENV_HOME_DIR "$ENV{HOME}")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/findcmake")
 
 # Set base directories
-set(CPP_SRC_DIR "src/cpp")
+set(CPP_SRC_DIR "src/main/cpp")
 set(LIB_DIR "${CMAKE_SOURCE_DIR}/lib")
 
 # Add manual libs

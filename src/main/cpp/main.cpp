@@ -4,8 +4,6 @@
 #include "model/parser/word_parser.hpp"
 
 int main() {
-  std::cout << "Vai!!" << std::endl;
-
   Executor executor("name", "command", WordParser(), "[0-9]+");
 
   std::string parse("Foo Bar fest!!");
@@ -17,6 +15,7 @@ int main() {
   for (auto & line : parsed) {
     std::cout << "  " << line << std::endl;
   }
+  std::cout << "Size: " << sizeof(executor) / 1024.0 << " kB" << std::endl;
 
   return 0;
 }
