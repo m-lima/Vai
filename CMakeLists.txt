@@ -61,12 +61,15 @@ list(APPEND LIBRARIES "${CMAKE_THREAD_LIBS_INIT}")
 
 list(APPEND SOURCES
     ${CPP_SRC_DIR}/main.cpp
-    ${CPP_SRC_DIR}/model/executor.cpp
     )
 
 list(APPEND HEADERS
     ${CPP_SRC_DIR}/model/executor.hpp
+    ${CPP_SRC_DIR}/model/parser/abstract_parser.hpp
+    ${CPP_SRC_DIR}/model/parser/word_parser.hpp
     )
+
+list(APPEND SOURCES ${HEADERS})
 
 ##------------------------------------------------------------------------------
 ## Targets
