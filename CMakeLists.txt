@@ -47,5 +47,5 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/findcmake")
 ## Projects
 ##
 
-add_subdirectory(main)
 add_subdirectory(test)
+add_subdirectory(main)
