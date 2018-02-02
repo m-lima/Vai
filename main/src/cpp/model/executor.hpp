@@ -37,7 +37,7 @@ public:
   }
 
   std::string getExecutorCommand(const std::string & entry) {
-    static std::regex ENTRY_REPLACER("##ENTRY##");
+    static const std::regex ENTRY_REPLACER("##ENTRY##");
     return std::regex_replace(cCommand, ENTRY_REPLACER, entry);
   }
 

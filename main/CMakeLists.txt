@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.2)
-set(PROJECT_NAME Vai)
+set(SUB_PROJECT_NAME Vai)
 set(EXECUTABLE_NAME vai)
 
-project("${PROJECT_NAME}" CXX)
+project("${SUB_PROJECT_NAME}" CXX)
 
 ##------------------------------------------------------------------------------
 ## Initialization

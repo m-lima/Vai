@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "../../../src/cpp/model/executor.hpp"
-#include "../../../src/cpp/model/parser/word_parser.hpp"
+#include "../../../../main/src/cpp/model/executor.hpp"
+#include "../../../../main/src/cpp/model/parser/word_parser.hpp"
 
 TEST(word_parser_test, parsing) {
   WordParser tested = WordParser();
