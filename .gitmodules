@@ -1,0 +1,9 @@
+[submodule "test/lib/googletest"]
+	path = test/lib/googletest
+	url = https://github.com/google/googletest.git
+[submodule "main/lib/fmt"]
+	path = main/lib/fmt
+	url = https://github.com/fmtlib/fmt
+[submodule "main/include/mfl"]
+	path = main/include/mfl
+	url = https://m-lima@github.com/m-lima/mfl
