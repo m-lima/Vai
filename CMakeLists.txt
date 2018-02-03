@@ -7,6 +7,9 @@ project("${PROJECT_NAME}" CXX)
 ## Initialization
 ##
 
+# Enable tests
+enable_testing()
+
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 11)

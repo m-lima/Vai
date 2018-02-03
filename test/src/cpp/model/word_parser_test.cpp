@@ -10,6 +10,6 @@ TEST(word_parser_test, parsing) {
 
   EXPECT_EQ(output.size(), 3);
   for (int i = 0; i < 3; ++i) {
-    EXPECT_EQ(output[i], expected[0]);
+    EXPECT_EQ(output[i], expected[i]);
   }
 }

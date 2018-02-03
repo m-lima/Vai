@@ -4,8 +4,6 @@ set(EXECUTABLE_NAME vai_test)
 
 project("${SUB_PROJECT_NAME}" CXX)
 
-enable_testing()
-
 ##------------------------------------------------------------------------------
 ## Initialization
 ##
@@ -37,8 +35,6 @@ list(APPEND TESTS
 ##
 
 add_executable(${EXECUTABLE_NAME} ${TESTS})
-add_dependencies(${EXECUTABLE_NAME} gtest)
 target_link_libraries(${EXECUTABLE_NAME} gtest gtest_main)
 add_test(tests ${EXECUTABLE_NAME})
-set_tests_properties(tests PROPERTIES WILL_FAIL TRUE)
 
