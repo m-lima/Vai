@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "../../../../main/src/cpp/model/executor.hpp"
+#include "../../../../main/src/cpp/core/executor.hpp"
 #include "../../../../main/src/cpp/model/parser/word_parser.hpp"
 
 TEST(word_parser_test, parsing) {
