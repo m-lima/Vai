@@ -7,3 +7,6 @@
 [submodule "main/include/mfl"]
 	path = main/include/mfl
 	url = https://m-lima@github.com/m-lima/mfl
+[submodule "main/lib/json"]
+	path = main/lib/json
+	url = https://github.com/nlohmann/json.git

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <sstream>
-
 #include "abstract_parser.hpp"
 
 class WordParser : public AbstractParser {

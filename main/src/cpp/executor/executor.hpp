@@ -5,7 +5,7 @@
 #include <functional>
 #include <regex>
 
-#include "parser/abstract_parser.hpp"
+#include "../parser/abstract_parser.hpp"
 
 class Executor {
 private:

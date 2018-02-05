@@ -26,18 +26,30 @@ list(APPEND LIBRARIES fmt::fmt-header-only)
 find_package(Threads)
 list(APPEND LIBRARIES "${CMAKE_THREAD_LIBS_INIT}")
 
+list(APPEND INCLUDE_DIRS "${LIB_DIR}/json/single_include")
+
 ##------------------------------------------------------------------------------
 ## Sources
 ##
 
 list(APPEND SOURCES
     ${CPP_SRC_DIR}/main.cpp
+    ${CPP_SRC_DIR}/view/console.cpp
+    ${CPP_SRC_DIR}/executor/executor_store.cpp
+    ${CPP_SRC_DIR}/config/config_manager.cpp
+    ${CPP_SRC_DIR}/parser/parser_registry.cpp
     )
 
 list(APPEND HEADERS
-    ${CPP_SRC_DIR}/model/executor.hpp
-    ${CPP_SRC_DIR}/model/parser/abstract_parser.hpp
-    ${CPP_SRC_DIR}/model/parser/word_parser.hpp
+    ${CPP_SRC_DIR}/view/console.hpp
+    ${CPP_SRC_DIR}/executor/executor.hpp
+    ${CPP_SRC_DIR}/executor/executor_store.hpp
+    ${CPP_SRC_DIR}/config/config_manager.hpp
+    ${CPP_SRC_DIR}/config/config_format.hpp
+    ${CPP_SRC_DIR}/parser/abstract_parser.hpp
+    ${CPP_SRC_DIR}/parser/parser_registry.hpp
+    ${CPP_SRC_DIR}/parser/word_parser.hpp
+    ${CPP_SRC_DIR}/parser/dumb_parser.hpp
     )
 
 list(APPEND SOURCES ${HEADERS})
