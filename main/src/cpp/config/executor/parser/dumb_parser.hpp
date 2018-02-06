@@ -8,4 +8,6 @@ public:
       [&](const std::string & str) {
         return std::vector<std::string> { str };
       }) {}
+
+  std::string getName() const { return "DUMB"; };
 };

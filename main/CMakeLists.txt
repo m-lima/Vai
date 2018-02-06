@@ -8,6 +8,11 @@ project("${SUB_PROJECT_NAME}" CXX)
 ## Initialization
 ##
 
+#SET(GCC_LINK_FLAGS "-v")
+SET(CMAKE_SHARED_LINKER_FLAGS "-v")
+SET(CMAKE_MODULE_LINKER_FLAGS "-v")
+SET(CMAKE_EXE_LINKER_FLAGS "-v")
+
 # Set base directories
 set(CPP_SRC_DIR "src/cpp")
 set(LIB_DIR "lib")
@@ -35,21 +40,19 @@ list(APPEND INCLUDE_DIRS "${LIB_DIR}/json/single_include")
 list(APPEND SOURCES
     ${CPP_SRC_DIR}/main.cpp
     ${CPP_SRC_DIR}/view/console.cpp
-    ${CPP_SRC_DIR}/executor/executor_store.cpp
     ${CPP_SRC_DIR}/config/config_manager.cpp
-    ${CPP_SRC_DIR}/parser/parser_registry.cpp
+    ${CPP_SRC_DIR}/config/executor/parser/parser_registry.cpp
     )
 
 list(APPEND HEADERS
     ${CPP_SRC_DIR}/view/console.hpp
-    ${CPP_SRC_DIR}/executor/executor.hpp
-    ${CPP_SRC_DIR}/executor/executor_store.hpp
     ${CPP_SRC_DIR}/config/config_manager.hpp
-    ${CPP_SRC_DIR}/config/config_format.hpp
-    ${CPP_SRC_DIR}/parser/abstract_parser.hpp
-    ${CPP_SRC_DIR}/parser/parser_registry.hpp
-    ${CPP_SRC_DIR}/parser/word_parser.hpp
-    ${CPP_SRC_DIR}/parser/dumb_parser.hpp
+    ${CPP_SRC_DIR}/config/config_model.hpp
+    ${CPP_SRC_DIR}/config/executor/executor.hpp
+    ${CPP_SRC_DIR}/config/executor/parser/abstract_parser.hpp
+    ${CPP_SRC_DIR}/config/executor/parser/parser_registry.hpp
+    ${CPP_SRC_DIR}/config/executor/parser/word_parser.hpp
+    ${CPP_SRC_DIR}/config/executor/parser/dumb_parser.hpp
     )
 
 list(APPEND SOURCES ${HEADERS})

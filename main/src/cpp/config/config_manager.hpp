@@ -1,23 +1,20 @@
 #pragma once
 
 #include <vector>
-#include <fstream>
 
-#include <nlohmann/json.hpp>
-
-#include "../executor/executor.hpp"
+#include "config_model.hpp"
 
 class ConfigManager {
 private:
   const std::string cConfigFolder;
-  nlohmann::json mExecutorConfig;
+  Config mConfig;
 
-  void loadKnownExecutorNames();
+  void loadExecutors();
 
 public:
   ConfigManager(const std::string & configFolder = "");
 
-  std::vector<std::string> getExecutorNames();
-  Executor loadExecutorByName(const std::string & executor);
-  void saveExecutor(const std::string & name, const Executor & executor);
+  void load();
+  void save(const Config & config);
 };
+

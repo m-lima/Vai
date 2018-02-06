@@ -4,9 +4,6 @@
 
 #include <mfl/out.hpp>
 
-#include "../executor/executor_store.hpp"
-#include "../config/config_manager.hpp"
-
 namespace {
 
   constexpr auto HELP_COMMAND = "help";
@@ -55,8 +52,7 @@ int Console::start(const std::string & configFolder,
     printUsage();
   }
 
-  ConfigManager configManager(configFolder);
-  ExecutorStore executorStore();
+//  ConfigManager configManager(configFolder);
 }
 
 

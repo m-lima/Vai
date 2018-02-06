@@ -1,4 +1,5 @@
 #include "parser_registry.hpp"
+
 #include <array>
 
 #include "word_parser.hpp"
@@ -11,8 +12,8 @@ namespace {
       WordParser()
   };
   const static std::array<std::string, KNOWN_PARSERS_COUNT> _knwonParserNames = {
-      "DUMB",
-      "WORD"
+      _knwonParsers[0].getName(),
+      _knwonParsers[1].getName()
   };
 }
 
