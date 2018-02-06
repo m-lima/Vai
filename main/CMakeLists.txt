@@ -18,6 +18,7 @@ set(CPP_SRC_DIR "src/cpp")
 set(LIB_DIR "lib")
 
 # Add manual libs
+list(APPEND INCLUDE_DIRS )
 list(APPEND INCLUDE_DIRS "include")
 
 ##------------------------------------------------------------------------------
