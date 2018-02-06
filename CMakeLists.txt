@@ -47,8 +47,8 @@ STRING(REGEX REPLACE "\\\\" "/" ENV_HOME_DIR "$ENV{HOME}")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/findcmake")
 
 # Global dependency folders
-set(GLOBAL_LIB_DIR "lib")
-set(GLOBAL_INCLUDE_DIR "include")
+set(GLOBAL_LIB_DIR "${CMAKE_SOURCE_DIR}/lib")
+set(GLOBAL_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
 
 ##------------------------------------------------------------------------------
 ## Projects
