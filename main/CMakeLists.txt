@@ -32,7 +32,7 @@ list(APPEND LIBRARIES fmt::fmt-header-only)
 find_package(Threads)
 list(APPEND LIBRARIES "${CMAKE_THREAD_LIBS_INIT}")
 
-list(APPEND INCLUDE_DIRS "${LIB_DIR}/json/single_include")
+list(APPEND INCLUDE_DIRS "${GLOBAL_LIB_DIR}/json/single_include")
 
 ##------------------------------------------------------------------------------
 ## Sources
