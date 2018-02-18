@@ -3,6 +3,8 @@
 #include <string>
 #include <regex>
 
+#include <mfl/string.hpp>
+
 #include "parser/abstract_parser.hpp"
 #include "parser/dumb_parser.hpp"
 #include "parser/parser_registry.hpp"
@@ -22,7 +24,7 @@ public:
            const std::string & command,
            const AbstractParser & parser,
            const std::string & validator = ".*")
-      : mName(name),
+      : mName(mfl::string::toLower(name)),
         mCommand(command),
         mParser(parser),
         mValidator(validator),
@@ -33,7 +35,7 @@ public:
   }
 
   void setName(const std::string & name) {
-    mName = name;
+    mName = mfl::string::toLower(name);
   }
 
   std::string getCommand() const {

@@ -1,8 +1,8 @@
 #include "console.hpp"
 
-#include <regex>
-
 #include <mfl/out.hpp>
+
+#include "../config/config_manager.hpp"
 
 namespace {
 
@@ -44,15 +44,22 @@ namespace {
   }
 }
 
-int Console::start(const std::string & configFolder,
-                   const std::string & executorName,
+int Console::start(const std::string & executorName,
                    const std::string & command) {
 
   if (executorName == HELP_COMMAND) {
     printUsage();
   }
 
-//  ConfigManager configManager(configFolder);
+  ConfigManager configManager;
+
+  auto execution = configManager
+      .executorManager
+      .getExecution(executorName, command);
+  mfl::out::println("Execute [{}]: {:s}", execution.status, execution.command);
+  if (execution.status) {
+    system(execution.command.c_str());
+  }
 }
 
 

@@ -3,57 +3,47 @@
 #include <iostream>
 #include <fstream>
 
+#ifdef VERBOSE
+  #include <mfl/out.hpp>
+#endif
+
 namespace {
-  std::string getDefaultConfigFolder(const std::string & configFolder) {
-    if (configFolder.empty()) {
-      return ".config/vai/";
-    }
-
-    std::string safeConfigFolder(configFolder);
-
-    if (safeConfigFolder[safeConfigFolder.length() - 1] != '/') {
-      safeConfigFolder += '/';
-    }
-    return safeConfigFolder;
+  std::string getDefaultConfigFile() {
+    return "/home/archer/.config/vai/config";
   }
 }
 
-ConfigManager::ConfigManager(const std::string & configFolder) : cConfigFolder(getDefaultConfigFolder(configFolder)) {
+ConfigManager::ConfigManager()
+    : cConfigFile(getDefaultConfigFile()) {
+#ifdef VERBOSE
+  mfl::out::println("ConfigManager::ctor cConfigFile = {:s}", cConfigFile);
+#endif
   load();
 }
 
 void ConfigManager::load() {
-  loadExecutors();
+  std::ifstream fileStream(cConfigFile);
+  if (!fileStream.is_open()) {
+#ifdef VERBOSE
+    mfl::out::println("ConfigManager::load Failed to open file {:s}", cConfigFile);
+#endif
+    return;
+  }
+
+  nlohmann::json config;
+  fileStream >> config;
+
+  executorManager.executors =
+      config.at(ConfigFormat::Executors::Field).get<std::vector<Executor>>();
+
+#ifdef VERBOSE
+  mfl::out::println("ConfigManager::load executors = {}", config);
+#endif
 }
 
-void ConfigManager::loadExecutors() {
-//  std::string configFile = cConfigFolder + "executors.cfg";
-//
-//  std::ifstream fileStream(configFile);
-//  if (!fileStream.is_open()) {
-//    return;
-//  }
-//
-//  nlohmann::json config;
-//
-//  fileStream >> config;
-//
-//  mConfig.executors.clear();
-//
-////  auto executors = config[ConfigFormat::Executors::Field];
-////  for (auto & executor : executors) {
-////    mConfig.executors.push_back(executor.get<Executor>());
-////  }
-//
-////  mConfig.executors = std::vector<Executor>{config[ConfigFormat::Executors::Field].begin(),
-////                                            config[ConfigFormat::Executors::Field].end()};
-//
-//  mConfig.executors = config.at(ConfigFormat::Executors::Field).get<std::vector<Executor>>();
-};
-
-void ConfigManager::save(const Config & config) {
-//  nlohmann::json saver;
-//  saver[ConfigFormat::Executors::Field] = config.executors;
-//  std::cout << saver <<std::endl;
+void ConfigManager::save() {
+  nlohmann::json saver;
+  saver[ConfigFormat::Executors::Field] = executorManager.executors;
+  std::cout << saver << std::endl;
 }
 

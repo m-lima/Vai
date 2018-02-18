@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include <mfl/string.hpp>
 #include <nlohmann/json.hpp>
 
 #include "executor/executor.hpp"
@@ -16,16 +17,11 @@
 struct ConfigFormat {
   struct Executors {
     static constexpr auto Field = CONFIG_FORMAT_EXECUTORS_FIELD;
-
     static constexpr auto name = CONFIG_FORMAT_EXECUTORS_NAME;
     static constexpr auto command = CONFIG_FORMAT_EXECUTORS_COMMAND;
     static constexpr auto parser = CONFIG_FORMAT_EXECUTORS_PARSER;
     static constexpr auto validator = CONFIG_FORMAT_EXECUTORS_VALIDATOR;
   };
-};
-
-struct Config {
-  std::vector<Executor> executors;
 };
 
 static void to_json(nlohmann::json & json, const Executor & executor) {

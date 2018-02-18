@@ -3,6 +3,7 @@
 #include "abstract_parser.hpp"
 
 #include <sstream>
+#include <iterator>
 
 class WordParser : public AbstractParser {
 public:

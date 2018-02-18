@@ -81,33 +81,41 @@ nlohmann::json createJson() {
 //  return "";
 }
 
-int main() {
+int main(int argc, char ** argv) {
 //  testParser();
 //  testJson();
-  auto json = createJson();
-  mfl::out::println("{:s}", json.dump(2));
-  json = yo;
-  json = R"(
-{
-  "executors": [
-    {
-      "command": "Dumb command",
-      "name": "Dumb",
-      "parser": "DUMB",
-      "validator": ".*"
-    },
-    {
-      "command": "Word command",
-      "name": "Word",
-      "parser": "DUMB",
-      "validator": ".*"
-    }
-  ]
-}
-)"_json;
-  mfl::out::println("{:s}", json.dump(4));
 
-//  Console console;
+  std::string command = argc > 2 ? argv[2] : "";
+
+  for (int i = 3; i < argc; ++i) {
+    command = command + " " + argv[i];
+  }
+
+//  auto json = createJson();
+//  mfl::out::println("{:s}", json.dump(2));
+//  json = yo;
+//  json = R"(
+//{
+//  "executors": [
+//    {
+//      "command": "Dumb command",
+//      "name": "Dumb",
+//      "parser": "DUMB",
+//      "validator": ".*"
+//    },
+//    {
+//      "command": "Word command",
+//      "name": "Word",
+//      "parser": "DUMB",
+//      "validator": ".*"
+//    }
+//  ]
+//}
+//)"_json;
+//  mfl::out::println("{:s}", json.dump(4));
+
+  Console console;
+  return console.start(argc > 1 ? argv[1] : "duck", command);
 //  std::unordered_map<std::string, std::string> map{};
 //  return console.start(map);
 }

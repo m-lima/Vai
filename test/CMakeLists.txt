@@ -27,7 +27,8 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 ##
 
 list(APPEND TESTS
-    ${CPP_TEST_DIR}/model/word_parser_test.cpp
+    ${CPP_TEST_DIR}/config/executor/parser/word_parser_test.cpp
+#    ${CPP_TEST_DIR}/config/config_manager_test.cpp
     )
 
 ##------------------------------------------------------------------------------
