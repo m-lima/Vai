@@ -17,31 +17,6 @@ namespace {
                       "COMMAND", "What the executor should perform");
   }
 
-// Helper function to show commands and arguments for the controller
-//  void printHelp() {
-//    mfl::out::println("Vai::Available commands:\n"
-//                        " {:<15}{:<25}{:s}\n" //title
-//                        " {:<15}{:<25}{:s}\n" //ctl
-//                        " {:<15}{:<25}{:s}\n" //wd
-//                        " {:<15}{:<25}{:s}\n" //plugin
-//                        " {:<15}{:<25}{:s}\n"
-//                        " {:<15}{:<25}{:s}\n"
-//                        " {:<15}{:<25}{:s}\n"
-//                        " {:<15}{:<25}{:s}\n" //info
-//                        " {:<15}{:<25}{:s}",  //quit
-//                    "COMMAND", "ARGUMENT", "DESCRIPTION",
-//                    "ctl", "start|stop|restart", "Control the child process",
-//                    "wd", "on|off", "Control the watchdog",
-//                    "plugin", "on|off|list|load|unload|info", "Manage the plugin system",
-//                    "", "", "Load requires the path to the plugin to load",
-//                    "", "", "Unload requires the index of to the plugin to unload",
-//                    "", "", "Info requires the index of to the plugin to query",
-//                    "info", "", "Show current wrapper status",
-//                    "quit", "", "Stop the wrapper");
-//  }
-
-  int listen(const std::string & executor = "", const std::string & command = "") {
-  }
 }
 
 int Console::start(const std::string & executorName,

@@ -3,13 +3,15 @@
 #include <iostream>
 #include <fstream>
 
+#include <mfl/path.hpp>
+
 #ifdef VERBOSE
   #include <mfl/out.hpp>
 #endif
 
 namespace {
   std::string getDefaultConfigFile() {
-    return "/home/archer/.config/vai/config";
+    return mfl::path::getConfigPath() + "/vai/config";
   }
 }
 
