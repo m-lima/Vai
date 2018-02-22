@@ -35,7 +35,8 @@ list(APPEND LIBRARIES fmt::fmt-header-only)
 find_package(Threads)
 list(APPEND LIBRARIES "${CMAKE_THREAD_LIBS_INIT}")
 
-list(APPEND INCLUDE_DIRS "${GLOBAL_LIB_DIR}/json/single_include")
+#list(APPEND INCLUDE_DIRS "${GLOBAL_LIB_DIR}/json/single_include")
+list(APPEND INCLUDE_DIRS "${LIB_DIR}/rapidjson/include")
 
 ##------------------------------------------------------------------------------
 ## Sources
@@ -45,6 +46,7 @@ list(APPEND SOURCES
     ${CPP_SRC_DIR}/main.cpp
     ${CPP_SRC_DIR}/view/console.cpp
     ${CPP_SRC_DIR}/config/config_manager.cpp
+    ${CPP_SRC_DIR}/config/executor/executor_parser.cpp
     ${CPP_SRC_DIR}/config/executor/parser/parser_registry.cpp
     )
 
@@ -54,6 +56,7 @@ list(APPEND HEADERS
     ${CPP_SRC_DIR}/config/config_model.hpp
     ${CPP_SRC_DIR}/config/executor/executor.hpp
     ${CPP_SRC_DIR}/config/executor/executor_manager.hpp
+    ${CPP_SRC_DIR}/config/executor/executor_parser.hpp
     ${CPP_SRC_DIR}/config/executor/parser/abstract_parser.hpp
     ${CPP_SRC_DIR}/config/executor/parser/parser_registry.hpp
     ${CPP_SRC_DIR}/config/executor/parser/word_parser.hpp

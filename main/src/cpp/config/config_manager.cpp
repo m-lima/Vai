@@ -4,10 +4,14 @@
 #include <fstream>
 
 #include <mfl/path.hpp>
+#include <rapidjson/reader.h>
+#include <rapidjson/filereadstream.h>
 
 #ifdef VERBOSE
   #include <mfl/out.hpp>
 #endif
+
+#include "executor/executor_parser.hpp"
 
 namespace {
   std::string getDefaultConfigFile() {
@@ -25,27 +29,43 @@ ConfigManager::ConfigManager()
 
 void ConfigManager::load() {
   std::ifstream fileStream(cConfigFile);
-  if (!fileStream.is_open()) {
+#ifdef WIN32
+  FILE * file = fopen(cConfigFile.c_str(), "rb");
+#else
+  FILE * file = fopen(cConfigFile.c_str(), "r");
+#endif
+
+  if (!file) {
 #ifdef VERBOSE
     mfl::out::println("ConfigManager::load Failed to open file {:s}", cConfigFile);
 #endif
     return;
   }
+  char readBuffer[65536];
+  rapidjson::FileReadStream stream(file, readBuffer, sizeof(readBuffer));
 
-  nlohmann::json config;
-  fileStream >> config;
+  rapidjson::Reader reader;
+  ExecutorParser parser;
+  reader.Parse(stream, parser);
+//  fileStream >> config;
 
-  executorManager.executors =
-      config.at(ConfigFormat::Executors::Field).get<std::vector<Executor>>();
+  executorManager.executors = std::vector<Executor>{parser.getExecutor()};
+//      config.at(ConfigFormat::Executors::Field).get<std::vector<Executor>>();
 
 #ifdef VERBOSE
-  mfl::out::println("ConfigManager::load executors = {}", config);
+  mfl::out::println("ConfigManager::load executors =");
+  for (auto & executor : executorManager.executors) {
+    mfl::out::println("Name: {}", executor.getName());
+    mfl::out::println("Command: {}", executor.getCommand());
+    mfl::out::println("Parser: {}", executor.getParser());
+    mfl::out::println("Validator: {}", executor.getValidator());
+  }
 #endif
 }
 
 void ConfigManager::save() {
-  nlohmann::json saver;
-  saver[ConfigFormat::Executors::Field] = executorManager.executors;
-  std::cout << saver << std::endl;
+//  nlohmann::json saver;
+//  saver[ConfigFormat::Executors::Field] = executorManager.executors;
+//  std::cout << saver << std::endl;
 }
 

@@ -18,6 +18,10 @@ namespace {
 }
 
 AbstractParser ParserRegistry::getParserByName(const std::string & name) {
+  if (name.empty()) {
+    return _knwonParsers[0];
+  }
+
   for (int i = 0; i < KNOWN_PARSERS_COUNT; ++i) {
     if (_knwonParserNames[i] == name) {
       return _knwonParsers[i];

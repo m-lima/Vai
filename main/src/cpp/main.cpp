@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include <mfl/out.hpp>
-#include <nlohmann/json.hpp>
+//#include <nlohmann/json.hpp>
 
 #include "config/executor/executor.hpp"
 #include "config/executor/parser/word_parser.hpp"
@@ -65,21 +65,21 @@ constexpr auto yo = R"bla"(
 }
 )bla"";
 
-nlohmann::json createJson() {
-  std::vector<Executor> executors = {{"Dumb", "Dumb command", DumbParser()}, {"Word", "Word command", WordParser()}};
-  nlohmann::json json;
-  json[ConfigFormat::Executors::Field] = executors;
-
-//  for (auto & executor : executors) {
-//    mfl::out::println("Name: {:s}", executor.getName());
-//    mfl::out::println("Command: {:s}", executor.getCommand());
-//    mfl::out::println("Parser: {:s}", executor.getParser());
-//    mfl::out::println("Validator ({:s}):", executor.getValidator());
-//  }
-
-  return json;
-//  return "";
-}
+//nlohmann::json createJson() {
+//  std::vector<Executor> executors = {{"Dumb", "Dumb command", DumbParser()}, {"Word", "Word command", WordParser()}};
+//  nlohmann::json json;
+//  json[ConfigFormat::Executors::Field] = executors;
+//
+////  for (auto & executor : executors) {
+////    mfl::out::println("Name: {:s}", executor.getName());
+////    mfl::out::println("Command: {:s}", executor.getCommand());
+////    mfl::out::println("Parser: {:s}", executor.getParser());
+////    mfl::out::println("Validator ({:s}):", executor.getValidator());
+////  }
+//
+//  return json;
+////  return "";
+//}
 
 int main(int argc, char ** argv) {
 //  testParser();
