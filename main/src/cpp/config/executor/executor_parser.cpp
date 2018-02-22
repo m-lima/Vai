@@ -8,7 +8,7 @@ bool ExecutorParser::EndObject(rapidjson::SizeType memberCount) {
   return mState != State::START;
 }
 
-bool ExecutorParser::Key(const char *str, rapidjson::SizeType length, bool copy) {
+bool ExecutorParser::Key(const char * str, rapidjson::SizeType length, bool copy) {
   if (length == 0) {
     return false;
   }
@@ -55,7 +55,7 @@ bool ExecutorParser::Null() {
   }
 }
 
-bool ExecutorParser::String(const char *value, rapidjson::SizeType length, bool copy) {
+bool ExecutorParser::String(const char * value, rapidjson::SizeType length, bool copy) {
   if (length == 0) {
     return false;
   }

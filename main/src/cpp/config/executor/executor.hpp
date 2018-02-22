@@ -18,7 +18,7 @@ private:
   std::string mValidatorString;
 
 public:
-  Executor() : mParser(DumbParser()){}
+  Executor() : mParser(DumbParser()) {}
 
   Executor(const std::string & name,
            const std::string & command,

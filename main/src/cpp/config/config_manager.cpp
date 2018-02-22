@@ -8,7 +8,7 @@
 #include <rapidjson/filereadstream.h>
 
 #ifdef VERBOSE
-  #include <mfl/out.hpp>
+#include <mfl/out.hpp>
 #endif
 
 #include "executor/executor_parser.hpp"
@@ -46,10 +46,8 @@ void ConfigManager::load() {
   rapidjson::Reader reader;
   ExecutorParser parser;
   reader.Parse(stream, parser);
-//  fileStream >> config;
 
   executorManager.executors = std::vector<Executor>{parser.getExecutor()};
-//      config.at(ConfigFormat::Executors::Field).get<std::vector<Executor>>();
 
 #ifdef VERBOSE
   fclose(file);
