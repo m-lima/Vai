@@ -1,53 +1,47 @@
 #pragma once
 
-#include <rapidjson/rapidjson.h>
-#include <rapidjson/encodings.h>
 #include <rapidjson/reader.h>
 
 #include "executor.hpp"
 
-#ifdef VERBOSE
-#include <mfl/out.hpp>
-#endif
-
 enum State {
-    START,
-    NAME,
-    COMMAND,
-    PARSER,
-    VALIDATOR
+  START,
+  NAME,
+  COMMAND,
+  PARSER,
+  VALIDATOR
 };
 
-class ExecutorParser
-    : public rapidjson::BaseReaderHandler<rapidjson::UTF8<>, ExecutorParser> {
-
+class ExecutorParser {
 private:
-    static constexpr auto NAME = "name";
-    static constexpr auto COMMAND = "command";
-    static constexpr auto PARSER = "parser";
-    static constexpr auto VALIDATOR = "validator";
+  static constexpr auto NAME = "name";
+  static constexpr auto COMMAND = "command";
+  static constexpr auto PARSER = "parser";
+  static constexpr auto VALIDATOR = "validator";
 
-    State mState = State::START;
-    Executor mExecutor;
+  State mState = State::START;
+  Executor mExecutor;
 
 public:
-    bool StartObject() {
-      return mState == State::START;
-    }
+  // Invalid types
+  bool Bool(bool) { return false; }
+  bool Int(int) { return false; }
+  bool Uint(unsigned) { return false; }
+  bool Int64(int64_t) { return false; }
+  bool Uint64(uint64_t) { return false; }
+  bool Double(double) { return false; }
+  bool RawNumber(const char* str, rapidjson::SizeType len, bool copy) { return false; }
+  bool StartArray() { return false; }
+  bool EndArray(rapidjson::SizeType) { return false; }
 
-    bool EndObject(rapidjson::SizeType memberCount) {
-      return mState != State::START;
-    }
+  // Source types
+  bool StartObject();
+  bool EndObject(rapidjson::SizeType memberCount);
+  bool Key(const char* str, rapidjson::SizeType length, bool copy);
+  bool Null();
+  bool String(const char* value, rapidjson::SizeType length, bool copy);
 
-    bool Default() {
-      return false;
-    }
-
-    inline Executor getExecutor() const {
-      return mExecutor;
-    }
-
-    bool Key(const char* str, rapidjson::SizeType length, bool copy);
-    bool Null();
-    bool String(const char* value, rapidjson::SizeType length, bool copy);
+  inline Executor getExecutor() const {
+    return mExecutor;
+  }
 };

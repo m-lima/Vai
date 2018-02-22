@@ -1,26 +1,34 @@
 #include "executor_parser.hpp"
 
-bool ExecutorParser::Key(const char* str, rapidjson::SizeType length, bool copy) {
+bool ExecutorParser::StartObject() {
+  return mState == State::START;
+}
+
+bool ExecutorParser::EndObject(rapidjson::SizeType memberCount) {
+  return mState != State::START;
+}
+
+bool ExecutorParser::Key(const char *str, rapidjson::SizeType length, bool copy) {
   if (length == 0) {
     return false;
   }
 
-  if (str == NAME) {
+  if (!strcmp(str, NAME)) {
     mState = State::NAME;
     return true;
   }
 
-  if (str == COMMAND) {
+  if (!strcmp(str, COMMAND)) {
     mState = State::COMMAND;
     return true;
   }
 
-  if (str == PARSER) {
+  if (!strcmp(str, PARSER)) {
     mState = State::PARSER;
     return true;
   }
 
-  if (str == VALIDATOR) {
+  if (!strcmp(str, VALIDATOR)) {
     mState = State::VALIDATOR;
     return true;
   }
@@ -47,7 +55,7 @@ bool ExecutorParser::Null() {
   }
 }
 
-bool ExecutorParser::String(const char* value, rapidjson::SizeType length, bool copy) {
+bool ExecutorParser::String(const char *value, rapidjson::SizeType length, bool copy) {
   if (length == 0) {
     return false;
   }

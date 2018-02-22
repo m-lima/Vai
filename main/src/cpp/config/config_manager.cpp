@@ -28,11 +28,10 @@ ConfigManager::ConfigManager()
 }
 
 void ConfigManager::load() {
-  std::ifstream fileStream(cConfigFile);
 #ifdef WIN32
-  FILE * file = fopen(cConfigFile.c_str(), "rb");
+  FILE * file = std::fopen(cConfigFile.c_str(), "rb");
 #else
-  FILE * file = fopen(cConfigFile.c_str(), "r");
+  FILE * file = std::fopen(cConfigFile.c_str(), "r");
 #endif
 
   if (!file) {
@@ -53,12 +52,16 @@ void ConfigManager::load() {
 //      config.at(ConfigFormat::Executors::Field).get<std::vector<Executor>>();
 
 #ifdef VERBOSE
-  mfl::out::println("ConfigManager::load executors =");
+  fclose(file);
+  std::ifstream fileStream(cConfigFile);
+  std::stringstream buffer;
+  buffer << fileStream.rdbuf();
+  mfl::out::println("ConfigManager::load executors:\n{:s}", buffer.str());
   for (auto & executor : executorManager.executors) {
-    mfl::out::println("Name: {}", executor.getName());
-    mfl::out::println("Command: {}", executor.getCommand());
-    mfl::out::println("Parser: {}", executor.getParser());
-    mfl::out::println("Validator: {}", executor.getValidator());
+    mfl::out::println("  Name: {}", executor.getName());
+    mfl::out::println("  Command: {}", executor.getCommand());
+    mfl::out::println("  Parser: {}", executor.getParser());
+    mfl::out::println("  Validator: {}", executor.getValidator());
   }
 #endif
 }
