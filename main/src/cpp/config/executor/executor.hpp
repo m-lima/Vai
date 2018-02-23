@@ -30,6 +30,14 @@ public:
         mValidator(validator),
         mValidatorString(validator) {}
 
+  void clear() {
+    mName = "";
+    mCommand = "";
+    mParser = ParserRegistry::getParserByName("DUMB");
+    mValidator = ".*";
+    mValidatorString = ".*";
+  }
+
   std::string getName() const {
     return mName;
   }

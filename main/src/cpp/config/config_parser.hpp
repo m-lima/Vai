@@ -19,6 +19,20 @@ private:
 public:
   ConfigParser() : mParser(this) {}
 
+  // Invalid types
+  bool Bool(bool) { return false; }
+  bool Int(int) { return false; }
+  bool Uint(unsigned) { return false; }
+  bool Int64(int64_t) { return false; }
+  bool Uint64(uint64_t) { return false; }
+  bool Double(double) { return false; }
+  bool RawNumber(const char *, rapidjson::SizeType, bool) { return false; }
+  bool StartArray() { return false; }
+  bool EndArray(rapidjson::SizeType) { return false; }
+  bool Null() { return false; }
+  bool String(const char *, rapidjson::SizeType, bool) { return false; }
+
+  // Source types
   bool StartObject() {
     return mState == State::START;
   }
@@ -37,7 +51,4 @@ public:
     return false;
   }
 
-  void * getParser() {
-    return mParser;
-  }
 };

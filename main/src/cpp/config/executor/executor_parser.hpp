@@ -33,7 +33,7 @@ public:
   bool Int64(int64_t) { return false; }
   bool Uint64(uint64_t) { return false; }
   bool Double(double) { return false; }
-  bool RawNumber(const char * str, rapidjson::SizeType len, bool copy) { return false; }
+  bool RawNumber(const char *, rapidjson::SizeType, bool) { return false; }
   bool StartArray() { return false; }
   bool EndArray(rapidjson::SizeType) { return false; }
 
@@ -42,9 +42,9 @@ public:
   bool EndObject(rapidjson::SizeType memberCount);
   bool Key(const char * str, rapidjson::SizeType length, bool copy);
   bool Null();
-  bool String(const char * value, rapidjson::SizeType length, bool copy);
+  bool String(const char * str, rapidjson::SizeType length, bool copy);
 
   inline Executor getExecutor() const {
-    return mExecutor;
+    return Executor(mExecutor);
   }
 };

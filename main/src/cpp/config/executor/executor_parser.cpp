@@ -1,7 +1,12 @@
 #include "executor_parser.hpp"
 
 bool ExecutorParser::StartObject() {
-  return mState == State::START;
+  if (mState == State::START) {
+    mExecutor.clear();
+    return true;
+  }
+
+  return false;
 }
 
 bool ExecutorParser::EndObject(rapidjson::SizeType memberCount) {
@@ -45,33 +50,33 @@ bool ExecutorParser::Null() {
       mExecutor.setCommand("");
       return true;
     case State::PARSER:
-      mExecutor.setParser("");
+      mExecutor.setParser("DUMB");
       return true;
     case State::VALIDATOR:
-      mExecutor.setValidator("");
+      mExecutor.setValidator(".*");
       return true;
     default:
       return false;
   }
 }
 
-bool ExecutorParser::String(const char * value, rapidjson::SizeType length, bool copy) {
+bool ExecutorParser::String(const char * str, rapidjson::SizeType length, bool copy) {
   if (length == 0) {
     return false;
   }
 
   switch (mState) {
     case State::NAME:
-      mExecutor.setName(value);
+      mExecutor.setName(str);
       return true;
     case State::COMMAND:
-      mExecutor.setCommand(value);
+      mExecutor.setCommand(str);
       return true;
     case State::PARSER:
-      mExecutor.setParser(value);
+      mExecutor.setParser(str);
       return true;
     case State::VALIDATOR:
-      mExecutor.setValidator(value);
+      mExecutor.setValidator(str);
       return true;
     default:
       return false;

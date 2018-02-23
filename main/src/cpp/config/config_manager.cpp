@@ -8,7 +8,9 @@
 #include <rapidjson/filereadstream.h>
 
 #ifdef VERBOSE
+
 #include <mfl/out.hpp>
+
 #endif
 
 #include "executor/executor_parser.hpp"
@@ -46,19 +48,21 @@ void ConfigManager::load() {
 
   rapidjson::Reader reader;
   ExecutorParser parser;
-//  reader.IterativeParseInit();
-//  while (!reader.IterativeParseComplete())
-//  reader.IterativeParseNext<rapidjson::kParseDefaultFlags>(stream, parser);
-  reader.Parse(stream, parser);
+  reader.IterativeParseInit();
+  while (!reader.IterativeParseComplete()) {
+    reader.IterativeParseNext<rapidjson::kParseDefaultFlags>(stream, parser);
+    mfl::out::println("State: {}", reader.IterativeParsingArrayInitialState
+  }
+//  reader.Parse(stream, parser);
 
   executorManager.executors = std::vector<Executor>{parser.getExecutor()};
 
 #ifdef VERBOSE
   fclose(file);
   std::ifstream fileStream(cConfigFile);
-  std::stringstream buffer;
-  buffer << fileStream.rdbuf();
-  mfl::out::println("ConfigManager::load executors:\n{:s}", buffer.str());
+  std::string json((std::istreambuf_iterator<char>(fileStream)),
+                   (std::istreambuf_iterator<char>()));
+  mfl::out::println("ConfigManager::load executors:\n{:s}", json);
   for (auto & executor : executorManager.executors) {
     mfl::out::println("  Name: {}", executor.getName());
     mfl::out::println("  Command: {}", executor.getCommand());

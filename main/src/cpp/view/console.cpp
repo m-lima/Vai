@@ -32,8 +32,14 @@ int Console::start(const std::string & executorName,
       .executorManager
       .getExecution(executorName, command);
   mfl::out::println("Execute [{}]: {:s}", execution.status, execution.command);
+
   if (execution.status) {
+#ifdef WIN32
+#elif APPLE
     system(execution.command.c_str());
+#else
+    system(execution.command.c_str());
+#endif
   }
 }
 
