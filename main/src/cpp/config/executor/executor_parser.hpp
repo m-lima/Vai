@@ -26,16 +26,16 @@ private:
   Executor mExecutor;
 
 public:
-//  // Invalid types
-//  bool Bool(bool) { return false; }
-//  bool Int(int) { return false; }
-//  bool Uint(unsigned) { return false; }
-//  bool Int64(int64_t) { return false; }
-//  bool Uint64(uint64_t) { return false; }
-//  bool Double(double) { return false; }
-//  bool RawNumber(const char * str, rapidjson::SizeType len, bool copy) { return false; }
-//  bool StartArray() { return false; }
-//  bool EndArray(rapidjson::SizeType) { return false; }
+  // Invalid types
+  bool Bool(bool) { return false; }
+  bool Int(int) { return false; }
+  bool Uint(unsigned) { return false; }
+  bool Int64(int64_t) { return false; }
+  bool Uint64(uint64_t) { return false; }
+  bool Double(double) { return false; }
+  bool RawNumber(const char * str, rapidjson::SizeType len, bool copy) { return false; }
+  bool StartArray() { return false; }
+  bool EndArray(rapidjson::SizeType) { return false; }
 
   // Source types
   bool StartObject();

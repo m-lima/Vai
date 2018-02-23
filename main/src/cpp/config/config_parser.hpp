@@ -2,7 +2,7 @@
 
 #include <rapidjson/reader.h>
 
-class ExecutorParser {
+class ConfigParser {
 private:
   struct Key {
     static constexpr auto EXECUTOR = "executor";
@@ -17,7 +17,7 @@ private:
   void * mParser;
 
 public:
-  ExecutorParser() : mParser(this) {}
+  ConfigParser() : mParser(this) {}
 
   bool StartObject() {
     return mState == State::START;
