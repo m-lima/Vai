@@ -13,22 +13,22 @@ bool ExecutorParser::Key(const char * str, rapidjson::SizeType length, bool copy
     return false;
   }
 
-  if (!strcmp(str, NAME)) {
+  if (!strcmp(str, Key::NAME)) {
     mState = State::NAME;
     return true;
   }
 
-  if (!strcmp(str, COMMAND)) {
+  if (!strcmp(str, Key::COMMAND)) {
     mState = State::COMMAND;
     return true;
   }
 
-  if (!strcmp(str, PARSER)) {
+  if (!strcmp(str, Key::PARSER)) {
     mState = State::PARSER;
     return true;
   }
 
-  if (!strcmp(str, VALIDATOR)) {
+  if (!strcmp(str, Key::VALIDATOR)) {
     mState = State::VALIDATOR;
     return true;
   }

@@ -53,7 +53,7 @@ list(APPEND SOURCES
 list(APPEND HEADERS
     ${CPP_SRC_DIR}/view/console.hpp
     ${CPP_SRC_DIR}/config/config_manager.hpp
-    ${CPP_SRC_DIR}/config/config_model.hpp
+    ${CPP_SRC_DIR}/config/config_parser.hpp
     ${CPP_SRC_DIR}/config/executor/executor.hpp
     ${CPP_SRC_DIR}/config/executor/executor_manager.hpp
     ${CPP_SRC_DIR}/config/executor/executor_parser.hpp

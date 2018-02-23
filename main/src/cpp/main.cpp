@@ -7,7 +7,6 @@
 #include "config/executor/parser/word_parser.hpp"
 
 #include "view/console.hpp"
-#include "config/config_model.hpp"
 
 //void testParser() {
 //  Executor executor("name", "command", WordParser(), "[0-9]+");

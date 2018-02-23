@@ -2,7 +2,6 @@
 
 #include <vector>
 
-#include "config_model.hpp"
 #include "executor/executor_manager.hpp"
 
 class ConfigManager {

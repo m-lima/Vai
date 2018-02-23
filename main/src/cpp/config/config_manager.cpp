@@ -40,11 +40,15 @@ void ConfigManager::load() {
 #endif
     return;
   }
-  char readBuffer[65536];
+
+  char readBuffer[0xFFFF];
   rapidjson::FileReadStream stream(file, readBuffer, sizeof(readBuffer));
 
   rapidjson::Reader reader;
   ExecutorParser parser;
+//  reader.IterativeParseInit();
+//  while (!reader.IterativeParseComplete())
+//  reader.IterativeParseNext<rapidjson::kParseDefaultFlags>(stream, parser);
   reader.Parse(stream, parser);
 
   executorManager.executors = std::vector<Executor>{parser.getExecutor()};
