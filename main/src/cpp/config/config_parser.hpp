@@ -1,24 +1,35 @@
 #pragma once
 
 #include <rapidjson/reader.h>
+#include "executor/executor_manager.hpp"
 
 class ConfigParser {
 private:
+
   struct Key {
-    static constexpr auto EXECUTOR = "executor";
+    static constexpr auto EXECUTORS = "executors";
+    static constexpr auto NAME = "name";
+    static constexpr auto COMMAND = "command";
+    static constexpr auto PARSER = "parser";
+    static constexpr auto VALIDATOR = "validator";
   };
 
   enum State {
     START,
-    EXECUTOR
+    END
   };
 
-  State mState = State::START;
-  void * mParser;
+  struct ParsingState {
+    char * target;
+    State state;
+  } mParsingState;
+
+  ExecutorManager * pExecutorManager;
+  Executor mExecutor;
 
 public:
-  ConfigParser() : mParser(this) {}
-
+  ConfigParser(ExecutorManager & executorManager)
+      : pExecutorManager(&executorManager) {}
   // Invalid types
   bool Bool(bool) { return false; }
   bool Int(int) { return false; }
@@ -27,28 +38,14 @@ public:
   bool Uint64(uint64_t) { return false; }
   bool Double(double) { return false; }
   bool RawNumber(const char *, rapidjson::SizeType, bool) { return false; }
-  bool StartArray() { return false; }
-  bool EndArray(rapidjson::SizeType) { return false; }
   bool Null() { return false; }
   bool String(const char *, rapidjson::SizeType, bool) { return false; }
 
   // Source types
-  bool StartObject() {
-    return mState == State::START;
-  }
-
-  bool EndObject(rapidjson::SizeType memberCount) {
-    mParser = 0;
-    return mState != State::START;
-  }
-
-  bool Key(const char * str, rapidjson::SizeType length, bool copy) {
-    if (!strcmp(str, Key::EXECUTOR)) {
-      mState = State::EXECUTOR;
-      return true;
-    }
-
-    return false;
-  }
+  bool StartObject();
+  bool EndObject(rapidjson::SizeType memberCount);
+  bool Key(const char * str, rapidjson::SizeType length, bool copy);
+  bool StartArray();
+  bool EndArray(rapidjson::SizeType);
 
 };

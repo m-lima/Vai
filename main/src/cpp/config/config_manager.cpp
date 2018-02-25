@@ -48,12 +48,11 @@ void ConfigManager::load() {
 
   rapidjson::Reader reader;
   ExecutorParser parser;
-  reader.IterativeParseInit();
-  while (!reader.IterativeParseComplete()) {
-    reader.IterativeParseNext<rapidjson::kParseDefaultFlags>(stream, parser);
-    mfl::out::println("State: {}", reader.IterativeParsingArrayInitialState
-  }
-//  reader.Parse(stream, parser);
+//  reader.IterativeParseInit();
+//  while (!reader.IterativeParseComplete()) {
+//    reader.IterativeParseNext<rapidjson::kParseDefaultFlags>(stream, parser);
+//  }
+  reader.Parse(stream, parser);
 
   executorManager.executors = std::vector<Executor>{parser.getExecutor()};
 

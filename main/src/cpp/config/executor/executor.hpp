@@ -30,19 +30,11 @@ public:
         mValidator(validator),
         mValidatorString(validator) {}
 
-  void clear() {
-    mName = "";
-    mCommand = "";
-    mParser = ParserRegistry::getParserByName("DUMB");
-    mValidator = ".*";
-    mValidatorString = ".*";
-  }
-
   std::string getName() const {
     return mName;
   }
 
-  void setName(const std::string & name) {
+  void setName(const std::string & name = "") {
     mName = mfl::string::toLower(name);
   }
 
@@ -50,7 +42,7 @@ public:
     return mCommand;
   }
 
-  void setCommand(const std::string & command) {
+  void setCommand(const std::string & command = "") {
     mCommand = command;
   }
 
@@ -58,7 +50,7 @@ public:
     return mParser.getName();
   }
 
-  void setParser(const std::string & parser) {
+  void setParser(const std::string & parser = "DUMB") {
     mParser = ParserRegistry::getParserByName(parser);
   }
 
@@ -66,7 +58,7 @@ public:
     return mValidatorString;
   }
 
-  void setValidator(const std::string & validator) {
+  void setValidator(const std::string & validator = ".*") {
     mValidatorString = validator;
     mValidator = std::regex(validator);
   }

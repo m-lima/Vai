@@ -2,7 +2,7 @@
 
 bool ExecutorParser::StartObject() {
   if (mState == State::START) {
-    mExecutor.clear();
+    mExecutor = Executor();
     return true;
   }
 
@@ -44,16 +44,16 @@ bool ExecutorParser::Key(const char * str, rapidjson::SizeType length, bool copy
 bool ExecutorParser::Null() {
   switch (mState) {
     case State::NAME:
-      mExecutor.setName("");
+      mExecutor.setName();
       return true;
     case State::COMMAND:
-      mExecutor.setCommand("");
+      mExecutor.setCommand();
       return true;
     case State::PARSER:
-      mExecutor.setParser("DUMB");
+      mExecutor.setParser();
       return true;
     case State::VALIDATOR:
-      mExecutor.setValidator(".*");
+      mExecutor.setValidator();
       return true;
     default:
       return false;

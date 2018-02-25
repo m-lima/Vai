@@ -45,6 +45,7 @@ list(APPEND INCLUDE_DIRS "${LIB_DIR}/rapidjson/include")
 list(APPEND SOURCES
     ${CPP_SRC_DIR}/view/console.cpp
     ${CPP_SRC_DIR}/config/config_manager.cpp
+    ${CPP_SRC_DIR}/config/config_parser.cpp
     ${CPP_SRC_DIR}/config/executor/executor_parser.cpp
     ${CPP_SRC_DIR}/config/executor/parser/parser_registry.cpp
     )

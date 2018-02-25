@@ -45,6 +45,6 @@ public:
   bool String(const char * str, rapidjson::SizeType length, bool copy);
 
   inline Executor getExecutor() const {
-    return Executor(mExecutor);
+    return mExecutor;
   }
 };
