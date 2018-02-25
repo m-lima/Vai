@@ -13,7 +13,6 @@ struct Execution {
 
 class ExecutorManager {
 public:
-
   Execution getExecution(const std::string & name, const std::string & command) {
     const auto lowerName = mfl::string::toLower(name);
     auto executor = std::find_if(executors.begin(),

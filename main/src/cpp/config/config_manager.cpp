@@ -4,16 +4,12 @@
 #include <fstream>
 
 #include <mfl/path.hpp>
-#include <rapidjson/reader.h>
-#include <rapidjson/filereadstream.h>
 
 #ifdef VERBOSE
-
 #include <mfl/out.hpp>
-
 #endif
 
-#include "executor/executor_parser.hpp"
+#include "config_parser.hpp"
 
 namespace {
   std::string getDefaultConfigFile() {
@@ -30,35 +26,10 @@ ConfigManager::ConfigManager()
 }
 
 void ConfigManager::load() {
-#ifdef WIN32
-  FILE * file = std::fopen(cConfigFile.c_str(), "rb");
-#else
-  FILE * file = std::fopen(cConfigFile.c_str(), "r");
-#endif
-
-  if (!file) {
-#ifdef VERBOSE
-    mfl::out::println("ConfigManager::load Failed to open file {:s}", cConfigFile);
-#endif
-    return;
-  }
-
-  char readBuffer[0xFFFF];
-  rapidjson::FileReadStream stream(file, readBuffer, sizeof(readBuffer));
-
-  rapidjson::Reader reader;
-  ExecutorParser parser;
-//  reader.IterativeParseInit();
-//  while (!reader.IterativeParseComplete()) {
-//    reader.IterativeParseNext<rapidjson::kParseDefaultFlags>(stream, parser);
-//  }
-  reader.Parse(stream, parser);
-
-  executorManager.executors = std::vector<Executor>{parser.getExecutor()};
-
-#ifdef VERBOSE
-  fclose(file);
   std::ifstream fileStream(cConfigFile);
+  ConfigParser::parse(fileStream, *this);
+
+#ifdef VERBOSE
   std::string json((std::istreambuf_iterator<char>(fileStream)),
                    (std::istreambuf_iterator<char>()));
   mfl::out::println("ConfigManager::load executors:\n{:s}", json);
@@ -72,8 +43,5 @@ void ConfigManager::load() {
 }
 
 void ConfigManager::save() {
-//  nlohmann::json saver;
-//  saver[ConfigFormat::Executors::Field] = executorManager.executors;
-//  std::cout << saver << std::endl;
 }
 

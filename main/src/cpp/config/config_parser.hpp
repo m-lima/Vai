@@ -1,51 +1,134 @@
 #pragma once
 
-#include <rapidjson/reader.h>
-#include "executor/executor_manager.hpp"
+#include <string>
+#include <sstream>
+
+#include <mfl/out.hpp>
+
+#include "config_manager.hpp"
+#include "executor/executor_parser.hpp"
 
 class ConfigParser {
 private:
-
-  struct Key {
-    static constexpr auto EXECUTORS = "executors";
-    static constexpr auto NAME = "name";
-    static constexpr auto COMMAND = "command";
-    static constexpr auto PARSER = "parser";
-    static constexpr auto VALIDATOR = "validator";
+  enum Type {
+    OBJECT,
+    COMMENT,
+    KEY
   };
 
-  enum State {
-    START,
-    END
+  struct Object {
+    static constexpr auto EXECUTORS = "-executors";
   };
 
-  struct ParsingState {
-    char * target;
-    State state;
-  } mParsingState;
+  static Type getType(const std::string & line) {
+    char c = 0;
+    for (char i : line) {
+      c = i;
+      switch (c) {
+        case ' ': continue;
+        case '#': return COMMENT;
+        case '-': return OBJECT;
+        default: return KEY;
+      }
+    }
+  }
 
-  ExecutorManager * pExecutorManager;
-  Executor mExecutor;
+  static bool isIndentationValid(const std::string & line,
+                                 int expectedIndentation) {
+    for (int i = 0; i < expectedIndentation && i < line.size(); ++i) {
+      if (!std::isspace(line[i])) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  template<typename Stream>
+  static bool parseExecutor(Stream & stream,
+                            ExecutorManager & executorManager,
+                            int indentation,
+                            int * lineNumber) {
+    ExecutorParser executorParser;
+
+    std::string line;
+    while (std::getline(stream, line)) {
+
+      if (!isIndentationValid(line, indentation)) {
+        break;
+      }
+
+      mfl::string::trimInPlace(line);
+
+      if (line.empty()) {
+        if (executorParser.isValid()) {
+          executorManager.executors.push_back(executorParser.executor);
+          return true;
+        }
+
+        break;
+      }
+    }
+
+    // TODO Move to parent function
+    mfl::out::println(stderr, "Failed to parse config at line: {:d}", *lineNumber);
+    return false;
+  }
+
+  template<typename Stream>
+  static bool parseExecutors(Stream & stream,
+                             ConfigManager & configManager,
+                             int indentation,
+                             int * lineNumber) {
+    std::string line;
+    while (std::getline(stream, line)) {
+
+      if (!isIndentationValid(line, indentation)) {
+        break;
+      }
+
+      mfl::string::trimInPlace(line);
+    }
+
+    return false;
+  }
 
 public:
-  ConfigParser(ExecutorManager & executorManager)
-      : pExecutorManager(&executorManager) {}
-  // Invalid types
-  bool Bool(bool) { return false; }
-  bool Int(int) { return false; }
-  bool Uint(unsigned) { return false; }
-  bool Int64(int64_t) { return false; }
-  bool Uint64(uint64_t) { return false; }
-  bool Double(double) { return false; }
-  bool RawNumber(const char *, rapidjson::SizeType, bool) { return false; }
-  bool Null() { return false; }
-  bool String(const char *, rapidjson::SizeType, bool) { return false; }
 
-  // Source types
-  bool StartObject();
-  bool EndObject(rapidjson::SizeType memberCount);
-  bool Key(const char * str, rapidjson::SizeType length, bool copy);
-  bool StartArray();
-  bool EndArray(rapidjson::SizeType);
+  template<typename Stream>
+  static bool parse(Stream & stream, ConfigManager & configManager) {
+    ExecutorManager executorManager;
+    ExecutorParser executorParser;
 
+    std::string line;
+    while (std::getline(stream, line)) {
+
+      mfl::string::trimInPlace(line);
+
+      switch (line[0]) {
+        case 0:
+        case '#': continue;
+        case '-':
+          if (line == Object::EXECUTORS) {
+            if (!executorManager.executors.empty()) {
+              return false;
+            }
+            executorManager = ExecutorManager();
+          }
+
+          if (line == "-executor") {
+            executorParser = ExecutorParser();
+          }
+
+          break;
+        default: executorParser.parse(line);
+      }
+    }
+
+    if (executorParser.isValid()) {
+      executorManager.executors.push_back(executorParser.executor);
+    }
+
+    configManager.executorManager = std::move(executorManager);
+  }
 };
