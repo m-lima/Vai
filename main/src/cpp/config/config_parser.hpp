@@ -10,13 +10,6 @@
 
 class ConfigParser {
 private:
-//  enum LineType {
-//    EXPECTED_INDENTATION,
-//    LESS_INDENTATION,
-//    MORE_INDENTATION,
-//    EMPTY,
-//    COMMENT
-//  };
 
   struct Line {
     int indentation = -1;
@@ -57,16 +50,23 @@ private:
 
   public:
     Line line;
-    int lineNumber;
-    std::string error;
+    int lineNumber = 0;
+    std::string error = "";
 
-    StreamReader(Stream && stream) : mStream(std::move(stream)) {}
+    StreamReader(Stream & stream) : mStream(std::move(stream)) {}
 
-    bool readNext() {
+    bool readNext(int expectedIndentation) {
       std::string buffer;
       while (std::getline(mStream, buffer)) {
         lineNumber++;
         line = buffer;
+
+        if (line.indentation > expectedIndentation) {
+          error = fmt::format("Wrong indentation. Was expecting {:d} and got {:d}",
+                              expectedIndentation,
+                              line.indentation);
+          return false;
+        }
 
         if (line.indentation >= 0) {
           return true;
@@ -83,53 +83,21 @@ private:
     static constexpr auto EXECUTOR = "executor";
   };
 
-//  // TODO: This is executed twice for lines where do-while is used
-//  // TODO: Currently, we required an empty line at the end of the file
-//  LineType getLineType(const std::string & line, int expectedIndentation) {
-//    int indentation = 0;
-//    for (int i = 0; i < line.size(); ++i) {
-//      if (!std::isspace(line[i])) {
-//        if (line[i] == '#') {
-//          return COMMENT;
-//        }
-//        indentation = i;
-//        break;
-//      }
-//    }
-//
-//    if (indentation == line.size()) {
-//      return EMPTY;
-//    }
-//
-//    if (indentation > expectedIndentation) return MORE_INDENTATION;
-//    if (indentation < expectedIndentation) return LESS_INDENTATION;
-//    return EXPECTED_INDENTATION;
-//
-//  }
-
   template <typename Stream>
   bool parseExecutor(StreamReader<Stream> & reader,
                      ExecutorManager & executorManager,
                      int indentation) {
     ExecutorParser executorParser;
 
-    while (reader.readNext()) {
-      if (reader.line.indentation < 0) {
-        continue;
-      }
-
-      if (reader.line.indentation > indentation) {
-        reader.error = fmt::format("Wrong indentation. Was expecting {:d} and got {:d}",
-                                   indentation,
-                                   reader.line.indentation);
-        return false;
-      }
-
+    while (reader.readNext(indentation)) {
       if (reader.line.indentation < indentation) {
         break;
       }
 
-      executorParser.parse(reader.line.value);
+      if (!executorParser.parse(reader.line.value)) {
+        reader.error = "Failure parsing executor";
+        return false;
+      }
     }
 
     if (executorParser.isValid()) {
@@ -147,81 +115,65 @@ private:
                       int indentation) {
     ExecutorManager executorManager;
 
-    while (reader.readNext()) {
-      if (reader.line.indentation < 0) {
-        continue;
-      }
+    if (!reader.readNext(indentation)) {
+      return false;
+    }
 
-      if (reader.line.indentation > indentation) {
-        reader.error = fmt::format("Wrong indentation. Was expecting {:d} and got {:d}",
-                                   indentation,
-                                   reader.line.indentation);
-        return false;
-      }
-
-      if (reader.line.indentation < indentation) {
-        break;
-      }
-
+    while (reader.line.indentation == indentation) {
       if (reader.line.value == Object::EXECUTOR) {
         if (!parseExecutor(reader, executorManager, indentation + 1)) {
           return false;
         }
+      } else {
+        reader.error = "Unrecognized entry";
+        return false;
       }
     }
 
-    configManager.executorManager = executorManager;
-    return true;
+    if (reader.error.empty()) {
+      configManager.executorManager = executorManager;
+      return true;
+    }
+    return false;
   }
 
+  template <typename Stream>
+  void parseBaseConfig(StreamReader<Stream> & reader,
+                       ConfigManager & configManager) {
+    int indentation = 0;
+
+    if (!reader.readNext(indentation)) {
+      return;
+    }
+
+    while (reader.line.indentation == indentation) {
+      if (reader.line.value == Object::EXECUTORS) {
+        if (!parseExecutors(reader, configManager, indentation + 1)) {
+          return;
+        }
+      } else {
+        reader.error = "Unrecognized entry";
+        return;
+      }
+    }
+  }
 
 public:
 
-  template<typename Stream>
+  template <typename Stream>
   bool parse(Stream & stream, ConfigManager & configManager) {
     int indentation = 0;
 
     StreamReader<Stream> reader(stream);
-    while (reader.readNext()) {
-      if (reader.line.indentation < 0) {
-        continue;
-      }
+    parseBaseConfig(reader, configManager);
 
-      if (reader.line.indentation > indentation) {
-        reader.error = fmt::format("Wrong indentation. Was expecting {:d} and got {:d}",
-                                   indentation,
-                                   reader.line.indentation);
-        break;
-      }
-
-      if (reader.line.value == Object::EXECUTORS) {
-        if (!parseExecutors(reader, configManager, indentation + 1)) {
-          break;
-        }
-      }
-    }
-
-    mfl::out::println(stderr, "Failed to parse config at line: {:d}", reader.lineNumber);
     if (!reader.error.empty()) {
-      mfl::out::println(stderr, "Error: {:s}", reader.error);
+      mfl::out::println(stderr, "Failed to parse config at line: {:d}", reader.lineNumber);
+      mfl::out::println(stderr, "  Error: {:s}", reader.error);
+      mfl::out::println(stderr, "  Line: {:s}", reader.line.value);
+      return false;
     }
-    return false;
 
-//    std::string line;
-//    while (std::getline(stream, line)) {
-//      mLineNumber++;
-//
-//      switch (getLineType(line, indentation)) {
-//        case COMMENT: continue;
-//        case EMPTY: continue;
-//        default: return false;
-//        case EXPECTED_INDENTATION:
-//          mfl::string::trimInPlace(line);
-//
-//          if (line == Object::EXECUTORS) {
-//            return parseExecutors(stream, configManager);
-//          }
-//      }
-//    }
+    return true;
   }
 };
