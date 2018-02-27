@@ -54,6 +54,7 @@ list(APPEND HEADERS
     ${CPP_SRC_DIR}/config/config_parser.hpp
     ${CPP_SRC_DIR}/config/executor/executor.hpp
     ${CPP_SRC_DIR}/config/executor/executor_manager.hpp
+    ${CPP_SRC_DIR}/config/executor/executor_manager_parser.hpp
     ${CPP_SRC_DIR}/config/executor/executor_parser.hpp
     ${CPP_SRC_DIR}/config/executor/parser/abstract_parser.hpp
     ${CPP_SRC_DIR}/config/executor/parser/parser_registry.hpp

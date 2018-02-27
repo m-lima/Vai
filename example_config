@@ -1,0 +1,27 @@
+executors
+ -name: duck
+  command: open "https://duckduckgo.com/?q=##ENTRY##"
+
+ # Google should be avoided
+ -name: google
+  command: open "www.google.com"
+
+## Example value
+#bar: 0.3
+
+## Example object
+#foo
+# name: yo
+# action: 3
+
+## Example list
+#bla:
+# -2
+# -3
+
+## Example object list
+#ble:
+# -name: bla
+#  action: 3
+# -name: ble
+#  action: 4

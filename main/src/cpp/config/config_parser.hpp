@@ -6,39 +6,67 @@
 #include <mfl/out.hpp>
 
 #include "config_manager.hpp"
-#include "executor/executor_parser.hpp"
+#include "executor/executor_manager_parser.hpp"
 
 class ConfigParser {
 private:
 
   struct Line {
+  private:
+    static const std::regex REGEX;
+    bool listItem = false;
+
+  public:
     int indentation = -1;
+    std::string key = "";
     std::string value = "";
 
     Line() = default;
 
+    bool popListItem() {
+      if (listItem) {
+        listItem = false;
+        indentation++;
+        return true;
+      }
+      return false;
+    }
+
     Line & operator=(const std::string & rawLine) noexcept {
-      int currentIndentation = 0;
+      indentation = 0;
       for (int i = 0; i < rawLine.size(); ++i) {
         if (!std::isspace(rawLine[i])) {
           if (rawLine[i] == '#') {
             indentation = -1;
+            listItem = false;
+            key = "";
             value = "";
             return *this;
           }
-          currentIndentation = i;
+          indentation = i;
           break;
         }
       }
 
-      if (currentIndentation == rawLine.size()) {
+      if (indentation == rawLine.size()) {
         indentation = -1;
+        listItem = false;
+        key = "";
         value = "";
         return *this;
       }
 
-      indentation = currentIndentation;
-      value = mfl::string::trim(rawLine);
+      std::smatch match;
+      if (!std::regex_match(rawLine, match, REGEX)) {
+        listItem = false;
+        key = "";
+        value = "";
+        return *this;
+      }
+
+      listItem = match[2] == "-";
+      key = match[3];
+      value = match[5];
       return *this;
     }
   };
@@ -61,6 +89,10 @@ private:
         lineNumber++;
         line = buffer;
 
+        if (line.indentation < 0) {
+          continue;
+        }
+
         if (line.indentation > expectedIndentation) {
           error = fmt::format("Wrong indentation. Was expecting {:d} and got {:d}",
                               expectedIndentation,
@@ -68,9 +100,12 @@ private:
           return false;
         }
 
-        if (line.indentation >= 0) {
-          return true;
+        if (line.key.empty()) {
+          error = "Could not parse line";
+          return false;
         }
+
+        return true;
       }
 
       return false;
@@ -80,65 +115,12 @@ private:
 
   struct Object {
     static constexpr auto EXECUTORS = "executors";
-    static constexpr auto EXECUTOR = "executor";
+    static constexpr auto FOO = "foo";
+    static constexpr auto BAR = "bar";
   };
 
-  template <typename Stream>
-  bool parseExecutor(StreamReader<Stream> & reader,
-                     ExecutorManager & executorManager,
-                     int indentation) {
-    ExecutorParser executorParser;
-
-    while (reader.readNext(indentation)) {
-      if (reader.line.indentation < indentation) {
-        break;
-      }
-
-      if (!executorParser.parse(reader.line.value)) {
-        reader.error = "Failure parsing executor";
-        return false;
-      }
-    }
-
-    if (executorParser.isValid()) {
-      executorManager.executors.push_back(executorParser.executor);
-      return true;
-    }
-
-    reader.error = "Invalid executor object";
-    return false;
-  }
-
-  template <typename Stream>
-  bool parseExecutors(StreamReader<Stream> & reader,
-                      ConfigManager & configManager,
-                      int indentation) {
-    ExecutorManager executorManager;
-
-    if (!reader.readNext(indentation)) {
-      return false;
-    }
-
-    while (reader.line.indentation == indentation) {
-      if (reader.line.value == Object::EXECUTOR) {
-        if (!parseExecutor(reader, executorManager, indentation + 1)) {
-          return false;
-        }
-      } else {
-        reader.error = "Unrecognized entry";
-        return false;
-      }
-    }
-
-    if (reader.error.empty()) {
-      configManager.executorManager = executorManager;
-      return true;
-    }
-    return false;
-  }
-
-  template <typename Stream>
-  void parseBaseConfig(StreamReader<Stream> & reader,
+  template <typename StreamReader>
+  void parseBaseConfig(StreamReader & reader,
                        ConfigManager & configManager) {
     int indentation = 0;
 
@@ -147,12 +129,14 @@ private:
     }
 
     while (reader.line.indentation == indentation) {
-      if (reader.line.value == Object::EXECUTORS) {
-        if (!parseExecutors(reader, configManager, indentation + 1)) {
+      if (reader.line.key == Object::EXECUTORS) {
+        if (!ExecutorManagerParser::parse(reader,
+                                          configManager.executorManager,
+                                          indentation + 1)) {
           return;
         }
       } else {
-        reader.error = "Unrecognized entry";
+        reader.error = "Unrecognized base entry";
         return;
       }
     }
@@ -170,7 +154,10 @@ public:
     if (!reader.error.empty()) {
       mfl::out::println(stderr, "Failed to parse config at line: {:d}", reader.lineNumber);
       mfl::out::println(stderr, "  Error: {:s}", reader.error);
-      mfl::out::println(stderr, "  Line: {:s}", reader.line.value);
+      mfl::out::println(stderr, "  Key: {:s}", reader.line.key);
+      if (!reader.line.value.empty()) {
+        mfl::out::println(stderr, "  Value: {:s}", reader.line.value);
+      }
       return false;
     }
 
