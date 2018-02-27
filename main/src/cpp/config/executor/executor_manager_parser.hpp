@@ -31,5 +31,19 @@ namespace ExecutorManagerParser {
 
     return true;
   }
+
+  template <typename Stream>
+  bool save(Stream & stream,
+            const ExecutorManager & executorManager,
+            int indentation) {
+    for (const auto & executor : executorManager.executors) {
+      fmt::print(stream, fmt::format("{{:<{:d}}}-", indentation), "");
+      if (!ExecutorParser::save(stream, executor, indentation + 1)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 };
 

@@ -27,6 +27,8 @@ int Console::start(const std::string & executorName,
   }
 
   ConfigManager configManager;
+  configManager.save();
+  return 0;
 
   auto execution = configManager
       .executorManager

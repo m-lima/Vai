@@ -27,8 +27,7 @@ ConfigManager::ConfigManager()
 
 void ConfigManager::load() {
   std::ifstream fileStream(cConfigFile);
-  ConfigParser parser;
-  parser.parse(fileStream, *this);
+  ConfigParser::parse(fileStream, *this);
 
 #ifdef VERBOSE
   std::string json((std::istreambuf_iterator<char>(fileStream)),
@@ -44,5 +43,7 @@ void ConfigManager::load() {
 }
 
 void ConfigManager::save() {
+  std::ofstream fileStream(cConfigFile + ".save");
+  ConfigParser::save(fileStream, *this);
 }
 

@@ -8,12 +8,16 @@
 #include "config_manager.hpp"
 #include "executor/executor_manager_parser.hpp"
 
-class ConfigParser {
-private:
+namespace ConfigParser {
+  static const std::regex REGEX =
+      std::regex("^[[:space:]]*"
+                     "((-)?([^:]+))"
+                     "[[:space:]]*"
+                     "(:[[:space:]]*(.+))?"
+                     "[[:space:]]*$]");
 
   struct Line {
   private:
-    static const std::regex REGEX;
     bool listItem = false;
 
   public:
@@ -57,7 +61,7 @@ private:
       }
 
       std::smatch match;
-      if (!std::regex_match(rawLine, match, REGEX)) {
+      if (!std::regex_match(rawLine, match, ConfigParser::REGEX)) {
         listItem = false;
         key = "";
         value = "";
@@ -115,41 +119,28 @@ private:
 
   struct Object {
     static constexpr auto EXECUTORS = "executors";
-    static constexpr auto FOO = "foo";
-    static constexpr auto BAR = "bar";
   };
-
-  template <typename StreamReader>
-  void parseBaseConfig(StreamReader & reader,
-                       ConfigManager & configManager) {
-    int indentation = 0;
-
-    if (!reader.readNext(indentation)) {
-      return;
-    }
-
-    while (reader.line.indentation == indentation) {
-      if (reader.line.key == Object::EXECUTORS) {
-        if (!ExecutorManagerParser::parse(reader,
-                                          configManager.executorManager,
-                                          indentation + 1)) {
-          return;
-        }
-      } else {
-        reader.error = "Unrecognized base entry";
-        return;
-      }
-    }
-  }
-
-public:
 
   template <typename Stream>
   bool parse(Stream & stream, ConfigManager & configManager) {
     int indentation = 0;
 
     StreamReader<Stream> reader(stream);
-    parseBaseConfig(reader, configManager);
+
+    if (reader.readNext(indentation)) {
+      while (reader.line.indentation == indentation) {
+        if (reader.line.key == Object::EXECUTORS) {
+          if (!ExecutorManagerParser::parse(reader,
+                                            configManager.executorManager,
+                                            indentation + 1)) {
+            break;
+          }
+        } else {
+          reader.error = "Unrecognized base entry";
+          break;
+        }
+      }
+    }
 
     if (!reader.error.empty()) {
       mfl::out::println(stderr, "Failed to parse config at line: {:d}", reader.lineNumber);
@@ -162,5 +153,13 @@ public:
     }
 
     return true;
+  }
+
+  template <typename Stream>
+  bool save(Stream & stream, const ConfigManager & configManager) {
+    stream << Object::EXECUTORS << std::endl;
+    if (!ExecutorManagerParser::save(stream, configManager.executorManager, 1)) {
+      return false;
+    }
   }
 };

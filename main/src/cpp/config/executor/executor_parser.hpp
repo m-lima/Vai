@@ -9,7 +9,9 @@ private:
   Executor * executor;
 
   ExecutorParser(Executor * target) : executor(target) {}
+
   bool parse(const std::string & key, const std::string & value);
+
   bool isValid() const {
     return executor
            && !executor->getName().empty()
@@ -43,5 +45,38 @@ public:
       reader.error = "Invalid executor object";
     }
     return false;
+  }
+
+  template <typename Stream>
+  static bool save(Stream & stream,
+                   const Executor & executor,
+                   int indentation) {
+    if (executor.getName().empty() || executor.getCommand().empty()) {
+      return true;
+    }
+
+    fmt::print(stream, "name: {:s}\n", executor.getName());
+    fmt::print(stream,
+               fmt::format("{{:<{:d}}}command: {:s}\n",
+                           indentation,
+                           executor.getCommand()),
+               "");
+    if (!executor.getValidator().empty() && executor.getValidator() != ".*") {
+      fmt::print(stream,
+                 fmt::format("{{:<{:d}}}validator: {:s}\n",
+                             indentation,
+                             executor.getValidator()),
+                 "");
+    }
+
+    if (!executor.getParser().empty() && executor.getParser() != "DUMB") {
+      fmt::print(stream,
+                 fmt::format("{{:<{:d}}}parser: {:s}\n",
+                             indentation,
+                             executor.getParser()),
+                 "");
+    }
+
+    return true;
   }
 };
