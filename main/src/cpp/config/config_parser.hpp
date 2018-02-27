@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <sstream>
+#include <regex>
 
 #include <mfl/out.hpp>
 
@@ -14,7 +14,7 @@ namespace ConfigParser {
                      "((-)?([^:]+))"
                      "[[:space:]]*"
                      "(:[[:space:]]*(.+))?"
-                     "[[:space:]]*$]");
+                     "[[:space:]]*$");
 
   struct Line {
   private:
@@ -145,7 +145,9 @@ namespace ConfigParser {
     if (!reader.error.empty()) {
       mfl::out::println(stderr, "Failed to parse config at line: {:d}", reader.lineNumber);
       mfl::out::println(stderr, "  Error: {:s}", reader.error);
-      mfl::out::println(stderr, "  Key: {:s}", reader.line.key);
+      if (!reader.line.key.empty()) {
+        mfl::out::println(stderr, "  Key: {:s}", reader.line.key);
+      }
       if (!reader.line.value.empty()) {
         mfl::out::println(stderr, "  Value: {:s}", reader.line.value);
       }
