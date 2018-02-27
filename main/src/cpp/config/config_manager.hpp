@@ -14,7 +14,7 @@ public:
   ConfigManager();
 
   void load();
-  void save();
+  void save() const;
 
   ExecutorManager executorManager;
 };

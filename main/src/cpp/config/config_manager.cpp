@@ -42,7 +42,7 @@ void ConfigManager::load() {
 #endif
 }
 
-void ConfigManager::save() {
+void ConfigManager::save() const {
   std::ofstream fileStream(cConfigFile + ".save");
   ConfigParser::save(fileStream, *this);
 }

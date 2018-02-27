@@ -17,7 +17,7 @@ namespace {
   };
 }
 
-AbstractParser ParserRegistry::getParserByName(const std::string & name) {
+AbstractParser const ParserRegistry::getParserByName(const std::string & name) {
   if (name.empty()) {
     return _knwonParsers[0];
   }

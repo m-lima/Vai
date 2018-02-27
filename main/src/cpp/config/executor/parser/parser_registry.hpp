@@ -2,8 +2,7 @@
 
 #include "abstract_parser.hpp"
 
-class ParserRegistry {
-public:
-  static AbstractParser getParserByName(const std::string & name);
+namespace ParserRegistry {
+  AbstractParser const getParserByName(const std::string & name);
 };
 

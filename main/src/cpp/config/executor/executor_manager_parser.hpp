@@ -5,10 +5,10 @@
 
 namespace ExecutorManagerParser {
 
-  template <typename StreamReader>
-  bool parse(StreamReader & reader,
-             ExecutorManager & executorManager,
-             int indentation) {
+  template<typename StreamReader>
+  constexpr bool parse(StreamReader & reader,
+                       ExecutorManager & executorManager,
+                       int indentation) {
     executorManager.executors.clear();
 
     if (!reader.readNext(indentation)) {
@@ -32,10 +32,10 @@ namespace ExecutorManagerParser {
     return true;
   }
 
-  template <typename Stream>
-  bool save(Stream & stream,
-            const ExecutorManager & executorManager,
-            int indentation) {
+  template<typename Stream>
+  constexpr bool save(Stream & stream,
+                      const ExecutorManager & executorManager,
+                      int indentation) {
     for (const auto & executor : executorManager.executors) {
       fmt::print(stream, fmt::format("{{:<{:d}}}-", indentation), "");
       if (!ExecutorParser::save(stream, executor, indentation + 1)) {
