@@ -23,7 +23,7 @@ list(APPEND INCLUDE_DIRS ${GLOBAL_INCLUDE_DIR})
 list(APPEND INCLUDE_DIRS "include")
 
 # Set verbose
-add_definitions("-DVERBOSE")
+#add_definitions("-DVERBOSE")
 
 ##------------------------------------------------------------------------------
 ## Dependencies
@@ -58,6 +58,8 @@ list(APPEND HEADERS
     ${CPP_SRC_DIR}/config/executor/parser/abstract_parser.hpp
     ${CPP_SRC_DIR}/config/executor/parser/parser_registry.hpp
     ${CPP_SRC_DIR}/config/executor/parser/word_parser.hpp
+    ${CPP_SRC_DIR}/config/executor/parser/duck_parser.hpp
+    ${CPP_SRC_DIR}/config/executor/parser/google_parser.hpp
     ${CPP_SRC_DIR}/config/executor/parser/dumb_parser.hpp
     )
 

@@ -27,7 +27,7 @@ namespace ConfigParser {
 
     Line() = default;
 
-    constexpr bool popListItem() {
+    bool popListItem() {
       if (listItem) {
         listItem = false;
         indentation++;
@@ -75,7 +75,7 @@ namespace ConfigParser {
     }
   };
 
-  template<typename Stream>
+  template <typename Stream>
   struct StreamReader {
   private:
     Stream mStream;
@@ -87,7 +87,7 @@ namespace ConfigParser {
 
     StreamReader(Stream & stream) : mStream(std::move(stream)) {}
 
-    constexpr bool readNext(int expectedIndentation) {
+    bool readNext(int expectedIndentation) {
       std::string buffer;
       while (std::getline(mStream, buffer)) {
         lineNumber++;
@@ -121,8 +121,8 @@ namespace ConfigParser {
     static constexpr auto EXECUTORS = "executors";
   };
 
-  template<typename Stream>
-  constexpr bool parse(Stream & stream, ConfigManager & configManager) {
+  template <typename Stream>
+  bool parse(Stream & stream, ConfigManager & configManager) {
     int indentation = 0;
 
     StreamReader<Stream> reader(stream);
@@ -157,8 +157,8 @@ namespace ConfigParser {
     return true;
   }
 
-  template<typename Stream>
-  constexpr bool save(Stream & stream, const ConfigManager & configManager) {
+  template <typename Stream>
+  bool save(Stream & stream, const ConfigManager & configManager) {
     stream << Object::EXECUTORS << std::endl;
     if (!ExecutorManagerParser::save(stream, configManager.executorManager, 1)) {
       return false;

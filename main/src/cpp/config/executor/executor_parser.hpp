@@ -20,10 +20,10 @@ private:
 
 public:
 
-  template<typename StreamReader>
-  static constexpr bool parse(StreamReader & reader,
-                              Executor & executor,
-                              int indentation) {
+  template <typename StreamReader>
+  static bool parse(StreamReader & reader,
+                    Executor & executor,
+                    int indentation) {
     ExecutorParser parser(&executor);
 
     do {
@@ -47,10 +47,10 @@ public:
     return false;
   }
 
-  template<typename Stream>
-  static constexpr bool save(Stream & stream,
-                             const Executor & executor,
-                             int indentation) {
+  template <typename Stream>
+  static bool save(Stream & stream,
+                   const Executor & executor,
+                   int indentation) {
     if (executor.getName().empty() || executor.getCommand().empty()) {
       return true;
     }

@@ -4,12 +4,16 @@
 
 #include "word_parser.hpp"
 #include "dumb_parser.hpp"
+#include "duck_parser.hpp"
+#include "google_parser.hpp"
 
 namespace {
-  static constexpr int KNOWN_PARSERS_COUNT = 2;
+  static constexpr int KNOWN_PARSERS_COUNT = 4;
   const static std::array<AbstractParser, KNOWN_PARSERS_COUNT> _knwonParsers = {
       DumbParser(),
-      WordParser()
+      WordParser(),
+      DuckParser(),
+      GoogleParser()
   };
   const static std::array<std::string, KNOWN_PARSERS_COUNT> _knwonParserNames = {
       _knwonParsers[0].getName(),

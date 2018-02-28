@@ -18,10 +18,10 @@ private:
   std::string mValidatorString;
 
 public:
-  Executor()
-      : mParser(DumbParser()),
-        mValidator(".*"),
-        mValidatorString(".*") {}
+  Executor() : Executor("",
+                        "",
+                        ParserRegistry::getParserByName("DUMB"),
+                        ".*") {}
 
   Executor(const std::string & name,
            const std::string & command,
