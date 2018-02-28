@@ -22,7 +22,7 @@ void testGoogle() {
   }
 }
 
-int main(int argc, char * argv[]) {
+int main() {
   Executor executor;
   executor.setName("yo");
   mfl::out::println(executor.getName());

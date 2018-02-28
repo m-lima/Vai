@@ -23,7 +23,6 @@ public:
   Executor(const std::string & name,
            const std::string & command,
            const AbstractCompleter & completer,
-           const std::string & suggestion = "",
            const std::string & validator = ".*")
       : mName(mfl::string::toLower(name)),
         mCommand(command),

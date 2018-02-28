@@ -1,6 +1,6 @@
 #pragma once
 
-#include "abstract_Completer.hpp"
+#include "abstract_completer.hpp"
 
 namespace CompleterRegistry {
   AbstractCompleter const getCompleterByName(const std::string & name);

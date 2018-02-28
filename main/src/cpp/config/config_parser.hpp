@@ -4,6 +4,7 @@
 #include <regex>
 
 #include <mfl/out.hpp>
+#include <mfl/util.hpp>
 
 #include "config_manager.hpp"
 #include "executor/executor_manager_parser.hpp"
@@ -39,7 +40,8 @@ namespace ConfigParser {
 
     Line & operator=(const std::string & rawLine) noexcept {
       indentation = 0;
-      for (int i = 0; i < rawLine.size(); ++i) {
+      int size = mfl::util::safeCast<int>(rawLine.size());//static_cast<int>(rawLine.size() & ~(1 << (sizeof(int) * 8 - 1)));
+      for (int i = 0; i < size; ++i) {
         if (!std::isspace(rawLine[i])) {
           if (rawLine[i] == '#') {
             indentation = -1;
@@ -53,7 +55,7 @@ namespace ConfigParser {
         }
       }
 
-      if (indentation == rawLine.size()) {
+      if (indentation == size) {
         indentation = -1;
         listItem = false;
         key = "";
@@ -164,5 +166,7 @@ namespace ConfigParser {
     if (!ExecutorManagerParser::save(stream, configManager.executorManager, 1)) {
       return false;
     }
+
+    return true;
   }
 };

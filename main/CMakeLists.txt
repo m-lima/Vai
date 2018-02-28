@@ -9,11 +9,6 @@ project("${SUB_PROJECT_NAME}" CXX)
 ## Initialization
 ##
 
-#SET(GCC_LINK_FLAGS "-v")
-SET(CMAKE_SHARED_LINKER_FLAGS "-v")
-SET(CMAKE_MODULE_LINKER_FLAGS "-v")
-SET(CMAKE_EXE_LINKER_FLAGS "-v")
-
 # Set base directories
 set(CPP_SRC_DIR "src/cpp")
 set(LIB_DIR "lib")
@@ -21,9 +16,6 @@ set(LIB_DIR "lib")
 # Add manual libs
 list(APPEND INCLUDE_DIRS ${GLOBAL_INCLUDE_DIR})
 list(APPEND INCLUDE_DIRS "include")
-
-# Set verbose
-#add_definitions("-DVERBOSE")
 
 ##------------------------------------------------------------------------------
 ## Dependencies
