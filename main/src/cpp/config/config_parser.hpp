@@ -169,4 +169,4 @@ namespace ConfigParser {
 
     return true;
   }
-};
+}

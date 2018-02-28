@@ -4,5 +4,5 @@
 
 namespace CompleterRegistry {
   AbstractCompleter const getCompleterByName(const std::string & name);
-};
+}
 

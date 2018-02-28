@@ -45,5 +45,5 @@ namespace ExecutorManagerParser {
 
     return true;
   }
-};
+}
 
