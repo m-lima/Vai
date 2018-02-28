@@ -1,10 +1,12 @@
 executors
  -name: duck
   command: open "https://duckduckgo.com/?q=##ENTRY##"
+  suggestion: https://duckduckgo.com/ac/?q=##ENTRY##
 
  # Google should be avoided
  -name: google
   command: open "www.google.com"
+  suggestion: http://suggestqueries.google.com/complete/search?output=toolbar&q=##ENTRY##
 
 ## Example value
 #bar: 0.3
