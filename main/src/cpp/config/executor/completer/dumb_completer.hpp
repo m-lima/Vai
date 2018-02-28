@@ -4,7 +4,7 @@
 
 class DumbCompleter : public AbstractCompleter {
 public:
-  DumbCompleter() : AbstractCompleter(
+  DumbCompleter() noexcept : AbstractCompleter(
       [&](const std::string & str) {
         return std::vector<std::string> {str};
       }) {}

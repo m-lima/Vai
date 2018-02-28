@@ -13,7 +13,7 @@ class Executor {
 private:
   std::string mName;
   std::string mCommand;
-  AbstractCompleter mCompleter;
+  const AbstractCompleter * mCompleter;
   std::regex mValidator;
   std::string mValidatorString;
 
@@ -22,7 +22,7 @@ public:
 
   Executor(const std::string & name,
            const std::string & command,
-           const AbstractCompleter & completer,
+           const AbstractCompleter * completer,
            const std::string & validator = ".*")
       : mName(mfl::string::toLower(name)),
         mCommand(command),
@@ -47,7 +47,7 @@ public:
   }
 
   std::string getCompleter() const {
-    return mCompleter.getName();
+    return mCompleter->getName();
   }
 
   void setCompleter(const std::string & completer = "DUMB") {

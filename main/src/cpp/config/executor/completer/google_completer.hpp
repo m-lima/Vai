@@ -26,7 +26,7 @@ private:
     return list;
   }
 public:
-  GoogleCompleter() : AbstractCompleter(GoogleCompleter::parse) {}
+  GoogleCompleter() noexcept : AbstractCompleter(GoogleCompleter::parse) {}
 
   static constexpr auto NAME = "GOOGLE";
   const std::string getName() const override { return NAME; };

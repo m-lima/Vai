@@ -6,11 +6,11 @@
 
 // TODO: Make constexpr
 namespace {
-  static constexpr int KNOWN_COMPLETER_COUNT = 3;
-  static const AbstractCompleter _knwonCompleters[KNOWN_COMPLETER_COUNT] = {
-      DumbCompleter(),
-      DuckCompleter(),
-      GoogleCompleter()
+  constexpr int KNOWN_COMPLETER_COUNT = 3;
+  const AbstractCompleter * _knwonCompleters[KNOWN_COMPLETER_COUNT] = {
+      new DumbCompleter(),
+      new DuckCompleter(),
+      new GoogleCompleter()
   };
   constexpr const char * _knwonCompleterNames[KNOWN_COMPLETER_COUNT] = {
       DumbCompleter::NAME,
@@ -19,7 +19,7 @@ namespace {
   };
 }
 
-const AbstractCompleter CompleterRegistry::getCompleterByName(const std::string & name) {
+const AbstractCompleter * CompleterRegistry::getCompleterByName(const std::string & name) {
   if (name.empty()) {
     return _knwonCompleters[0];
   }

@@ -21,7 +21,7 @@ private:
     return list;
   }
 public:
-  DuckCompleter() : AbstractCompleter(DuckCompleter::parse) {}
+  DuckCompleter() noexcept : AbstractCompleter(DuckCompleter::parse) {}
 
   static constexpr auto NAME = "DUCK";
   const std::string getName() const override { return NAME; };
