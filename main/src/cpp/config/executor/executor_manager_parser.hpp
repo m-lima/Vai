@@ -17,7 +17,7 @@ namespace ExecutorManagerParser {
 
     while (reader.line.indentation == indentation) {
       Executor executor;
-      if (reader.line.popListItem()) {
+      if (reader.line.popChild()) {
         if (ExecutorParser::parse(reader, executor, indentation + 1)) {
           executorManager.executors.push_back(executor);
         } else {

@@ -9,5 +9,6 @@ public:
         return std::vector<std::string> {str};
       }) {}
 
-  std::string getName() const { return "DUMB"; };
+  static constexpr auto NAME = "DUMB";
+  const std::string getName() const override { return NAME; };
 };

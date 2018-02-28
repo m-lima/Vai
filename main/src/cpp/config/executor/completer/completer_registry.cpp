@@ -12,14 +12,14 @@ namespace {
       DuckCompleter(),
       GoogleCompleter()
   };
-  static const std::string _knwonCompleterNames[KNOWN_COMPLETER_COUNT] = {
-      _knwonCompleters[0].getName(),
-      _knwonCompleters[1].getName(),
-      _knwonCompleters[2].getName()
+  constexpr const char * _knwonCompleterNames[KNOWN_COMPLETER_COUNT] = {
+      DumbCompleter::NAME,
+      DuckCompleter::NAME,
+      GoogleCompleter::NAME
   };
 }
 
-AbstractCompleter const CompleterRegistry::getCompleterByName(const std::string & name){
+const AbstractCompleter CompleterRegistry::getCompleterByName(const std::string & name) {
   if (name.empty()) {
     return _knwonCompleters[0];
   }

@@ -9,18 +9,12 @@
 #include "config_manager.hpp"
 #include "executor/executor_manager_parser.hpp"
 
-// TODO: Move regexes to CPP
 namespace ConfigParser {
-  static const std::regex REGEX =
-      std::regex("^[[:space:]]*"
-                     "((-)?([^:]+))"
-                     "[[:space:]]*"
-                     "(:[[:space:]]*(.+))?"
-                     "[[:space:]]*$");
 
   struct Line {
   private:
-    bool listItem = false;
+    static const std::regex REGEX;
+    bool child = false;
 
   public:
     int indentation = -1;
@@ -29,9 +23,9 @@ namespace ConfigParser {
 
     Line() = default;
 
-    bool popListItem() {
-      if (listItem) {
-        listItem = false;
+    bool popChild() {
+      if (child) {
+        child = false;
         indentation++;
         return true;
       }
@@ -40,12 +34,12 @@ namespace ConfigParser {
 
     Line & operator=(const std::string & rawLine) noexcept {
       indentation = 0;
-      int size = mfl::util::safeCast<int>(rawLine.size());//static_cast<int>(rawLine.size() & ~(1 << (sizeof(int) * 8 - 1)));
+      int size = mfl::util::safeCast<int>(rawLine.size());
       for (int i = 0; i < size; ++i) {
         if (!std::isspace(rawLine[i])) {
           if (rawLine[i] == '#') {
             indentation = -1;
-            listItem = false;
+            child = false;
             key = "";
             value = "";
             return *this;
@@ -57,21 +51,21 @@ namespace ConfigParser {
 
       if (indentation == size) {
         indentation = -1;
-        listItem = false;
+        child = false;
         key = "";
         value = "";
         return *this;
       }
 
       std::smatch match;
-      if (!std::regex_match(rawLine, match, ConfigParser::REGEX)) {
-        listItem = false;
+      if (!std::regex_match(rawLine, match, REGEX)) {
+        child = false;
         key = "";
         value = "";
         return *this;
       }
 
-      listItem = match[2] == "-";
+      child = match[2] == "-";
       key = match[3];
       value = match[5];
       return *this;

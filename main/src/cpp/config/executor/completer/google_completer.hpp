@@ -28,5 +28,6 @@ private:
 public:
   GoogleCompleter() : AbstractCompleter(GoogleCompleter::parse) {}
 
-  std::string getName() const { return "GOOGLE"; };
+  static constexpr auto NAME = "GOOGLE";
+  const std::string getName() const override { return NAME; };
 };

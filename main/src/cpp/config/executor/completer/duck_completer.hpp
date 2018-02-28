@@ -23,5 +23,6 @@ private:
 public:
   DuckCompleter() : AbstractCompleter(DuckCompleter::parse) {}
 
-  std::string getName() const { return "DUCK"; };
+  static constexpr auto NAME = "DUCK";
+  const std::string getName() const override { return NAME; };
 };

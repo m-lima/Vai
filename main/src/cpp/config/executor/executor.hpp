@@ -69,7 +69,7 @@ public:
 
   std::string getExecutorCommand(const std::string & entry) const;
 
-  std::vector<std::string> getSuggestions(const std::string & entry) const {
-    return mCompleter(entry);
+  std::vector<std::string> getSuggestions(const std::string &) const {
+    return std::vector<std::string>();//mCompleter(entry);
   }
 };
