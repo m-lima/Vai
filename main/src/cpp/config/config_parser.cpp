@@ -1,14 +1,5 @@
-#pragma once
+#include "config_parser.hpp"
 
-#include <string>
-#include <regex>
-
-#include <mfl/out.hpp>
-
-#include "config_manager.hpp"
-#include "executor/executor_manager_parser.hpp"
-
-// TODO: Move regexes to CPP
 namespace ConfigParser {
   static const std::regex REGEX =
       std::regex("^[[:space:]]*"

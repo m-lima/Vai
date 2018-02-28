@@ -5,31 +5,29 @@
 
 #include <mfl/string.hpp>
 
-#include "parser/abstract_parser.hpp"
-#include "parser/dumb_parser.hpp"
-#include "parser/parser_registry.hpp"
+#include "completer/abstract_completer.hpp"
+#include "completer/dumb_completer.hpp"
+#include "completer/completer_registry.hpp"
 
 class Executor {
 private:
   std::string mName;
   std::string mCommand;
-  AbstractParser mParser;
+  AbstractCompleter mCompleter;
   std::regex mValidator;
   std::string mValidatorString;
 
 public:
-  Executor() : Executor("",
-                        "",
-                        ParserRegistry::getParserByName("DUMB"),
-                        ".*") {}
+  Executor() : Executor("", "", CompleterRegistry::getCompleterByName("DUMB")) {}
 
   Executor(const std::string & name,
            const std::string & command,
-           const AbstractParser & parser,
+           const AbstractCompleter & completer,
+           const std::string & suggestion = "",
            const std::string & validator = ".*")
       : mName(mfl::string::toLower(name)),
         mCommand(command),
-        mParser(parser),
+        mCompleter(completer),
         mValidator(validator),
         mValidatorString(validator) {}
 
@@ -49,12 +47,12 @@ public:
     mCommand = command;
   }
 
-  std::string getParser() const {
-    return mParser.getName();
+  std::string getCompleter() const {
+    return mCompleter.getName();
   }
 
-  void setParser(const std::string & parser = "DUMB") {
-    mParser = ParserRegistry::getParserByName(parser);
+  void setCompleter(const std::string & completer = "DUMB") {
+    mCompleter = CompleterRegistry::getCompleterByName(completer);
   }
 
   std::string getValidator() const {
@@ -66,16 +64,13 @@ public:
     mValidator = std::regex(validator);
   }
 
-  bool validateEntry(const std::string & entry) {
-    return std::regex_search(entry.cbegin(), entry.cend(), mValidator);
+  bool validateEntry(const std::string & entry) const {
+    return std::regex_match(entry.cbegin(), entry.cend(), mValidator);
   }
 
-  std::string getExecutorCommand(const std::string & entry) {
-    static const std::regex ENTRY_REPLACER("##ENTRY##");
-    return std::regex_replace(mCommand, ENTRY_REPLACER, entry);
-  }
+  std::string getExecutorCommand(const std::string & entry) const;
 
-  std::vector<std::string> parseSuggestions(const std::string & body) {
-    return mParser(body);
+  std::vector<std::string> getSuggestions(const std::string & entry) const {
+    return mCompleter(entry);
   }
 };

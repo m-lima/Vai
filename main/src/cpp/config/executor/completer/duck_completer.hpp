@@ -1,11 +1,11 @@
 #pragma once
 
-#include "abstract_parser.hpp"
+#include "abstract_completer.hpp"
 
 #include <sstream>
 #include <regex>
 
-class DuckParser : public AbstractParser {
+class DuckCompleter : public AbstractCompleter {
 private:
   static std::vector<std::string> parse(const std::string & str) {
     static const std::regex regex("(\\{\"phrase\":\"([^\"]+)\"\\})");
@@ -21,7 +21,7 @@ private:
     return list;
   }
 public:
-  DuckParser() : AbstractParser(DuckParser::parse) {}
+  DuckCompleter() : AbstractCompleter(DuckCompleter::parse) {}
 
   std::string getName() const { return "DUCK"; };
 };

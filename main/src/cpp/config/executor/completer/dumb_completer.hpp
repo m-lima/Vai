@@ -1,10 +1,10 @@
 #pragma once
 
-#include "abstract_parser.hpp"
+#include "abstract_completer.hpp"
 
-class DumbParser : public AbstractParser {
+class DumbCompleter : public AbstractCompleter {
 public:
-  DumbParser() : AbstractParser(
+  DumbCompleter() : AbstractCompleter(
       [&](const std::string & str) {
         return std::vector<std::string> {str};
       }) {}

@@ -43,8 +43,9 @@ list(APPEND LIBRARIES "${CMAKE_THREAD_LIBS_INIT}")
 list(APPEND SOURCES
     ${CPP_SRC_DIR}/view/console.cpp
     ${CPP_SRC_DIR}/config/config_manager.cpp
+    ${CPP_SRC_DIR}/config/executor/executor.cpp
     ${CPP_SRC_DIR}/config/executor/executor_parser.cpp
-    ${CPP_SRC_DIR}/config/executor/parser/parser_registry.cpp
+    ${CPP_SRC_DIR}/config/executor/completer/completer_registry.cpp
     )
 
 list(APPEND HEADERS
@@ -55,12 +56,11 @@ list(APPEND HEADERS
     ${CPP_SRC_DIR}/config/executor/executor_manager.hpp
     ${CPP_SRC_DIR}/config/executor/executor_manager_parser.hpp
     ${CPP_SRC_DIR}/config/executor/executor_parser.hpp
-    ${CPP_SRC_DIR}/config/executor/parser/abstract_parser.hpp
-    ${CPP_SRC_DIR}/config/executor/parser/parser_registry.hpp
-    ${CPP_SRC_DIR}/config/executor/parser/word_parser.hpp
-    ${CPP_SRC_DIR}/config/executor/parser/duck_parser.hpp
-    ${CPP_SRC_DIR}/config/executor/parser/google_parser.hpp
-    ${CPP_SRC_DIR}/config/executor/parser/dumb_parser.hpp
+    ${CPP_SRC_DIR}/config/executor/completer/abstract_completer.hpp
+    ${CPP_SRC_DIR}/config/executor/completer/completer_registry.hpp
+    ${CPP_SRC_DIR}/config/executor/completer/duck_completer.hpp
+    ${CPP_SRC_DIR}/config/executor/completer/google_completer.hpp
+    ${CPP_SRC_DIR}/config/executor/completer/dumb_completer.hpp
     )
 
 list(APPEND SOURCES ${HEADERS})

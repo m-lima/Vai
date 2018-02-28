@@ -69,11 +69,11 @@ public:
                  "");
     }
 
-    if (!executor.getParser().empty() && executor.getParser() != "DUMB") {
+    if (!executor.getCompleter().empty() && executor.getCompleter() != "DUMB") {
       fmt::print(stream,
-                 fmt::format("{{:<{:d}}}parser: {:s}\n",
+                 fmt::format("{{:<{:d}}}completer: {:s}\n",
                              indentation,
-                             executor.getParser()),
+                             executor.getCompleter()),
                  "");
     }
 
