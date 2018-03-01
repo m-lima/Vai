@@ -8,16 +8,31 @@
 class GoogleCompleter : public AbstractCompleter {
 private:
   static std::vector<std::string> parse(const std::string & str) {
-    static const std::regex regex("(\"([^\"]+)\")");
 
-    std::smatch matches;
     std::vector<std::string> list;
+    std::ostringstream stringStream;
 
-    if (!std::regex_search(str, matches, regex)) {
+    try {
+      stringStream << curlpp::options::Url(str);
+    } catch( curlpp::RuntimeError &e ) {
+      std::cerr << e.what() << std::endl;
+      return list;
+
+    } catch( curlpp::LogicError &e ) {
+      std::cerr << e.what() << std::endl;
       return list;
     }
 
-    std::string entry = matches.suffix();
+    static const std::regex regex("(\"([^\"]+)\")");
+
+    std::smatch matches;
+    std::string entry = stringStream.str();
+
+    if (!std::regex_search(entry, matches, regex)) {
+      return list;
+    }
+
+    entry = matches.suffix();
     while (std::regex_search(entry, matches, regex)) {
       list.emplace_back(matches[1]);
       entry = matches.suffix();

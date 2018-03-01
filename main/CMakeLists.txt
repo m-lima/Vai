@@ -25,8 +25,9 @@ add_subdirectory("${LIB_DIR}/fmt")
 list(APPEND INCLUDE_DIRS "${LIB_DIR}/fmt")
 list(APPEND LIBRARIES fmt::fmt-header-only)
 
-find_package(Threads)
-list(APPEND LIBRARIES "${CMAKE_THREAD_LIBS_INIT}")
+add_subdirectory("${LIB_DIR}/curlpp")
+list(APPEND INCLUDE_DIRS "${LIB_DIR}/curlpp/include")
+list(APPEND LIBRARIES curlpp_static)
 
 ##------------------------------------------------------------------------------
 ## Sources

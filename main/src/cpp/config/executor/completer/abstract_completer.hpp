@@ -7,6 +7,7 @@
 // TODO: Put the completers in CPP
 // TODO: Lazily load completer (most of the time, only one executor is prepared)
 // TODO: Alternatively, make completer constexpr (hard if it requires I/O)
+// TODO: Can make constexpr with static functions in CPP
 class AbstractCompleter
     : public std::function<std::vector<std::string>(const std::string &)> {
 protected:
