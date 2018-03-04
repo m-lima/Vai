@@ -67,9 +67,7 @@ public:
     return std::regex_match(entry.cbegin(), entry.cend(), mValidator);
   }
 
-  std::string getExecutorCommand(const std::string & entry) const;
+  int execute(const std::string &) const;
 
-  std::vector<std::string> getSuggestions(const std::string &) const {
-    return std::vector<std::string>();//mCompleter(entry);
-  }
+  std::vector<std::string> getSuggestions(const std::string &) const;
 };

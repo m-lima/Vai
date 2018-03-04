@@ -38,6 +38,7 @@ private:
 
     return list;
   }
+
 public:
   DuckCompleter() noexcept : AbstractCompleter(DuckCompleter::parse) {}
 

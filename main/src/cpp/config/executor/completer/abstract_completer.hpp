@@ -16,5 +16,5 @@ protected:
       : std::function<std::vector<std::string>(const std::string &)>(parser) {}
 
 public:
-  virtual const std::string getName() const { return ""; };
+  virtual const std::string getName() const = 0;
 };

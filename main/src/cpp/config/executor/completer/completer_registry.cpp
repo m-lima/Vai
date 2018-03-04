@@ -4,31 +4,30 @@
 #include "duck_completer.hpp"
 #include "google_completer.hpp"
 
-// TODO: Make constexpr
 namespace {
-  constexpr int KNOWN_COMPLETER_COUNT = 3;
-  const AbstractCompleter * _knwonCompleters[KNOWN_COMPLETER_COUNT] = {
-      new DumbCompleter(),
-      new DuckCompleter(),
-      new GoogleCompleter()
-  };
-  constexpr const char * _knwonCompleterNames[KNOWN_COMPLETER_COUNT] = {
-      DumbCompleter::NAME,
-      DuckCompleter::NAME,
-      GoogleCompleter::NAME
-  };
+  static const DumbCompleter * const dumbCompleter = new DumbCompleter();
+  static const DuckCompleter * duckCompleter = nullptr;
+  static const GoogleCompleter * googleCompleter = nullptr;
 }
 
 const AbstractCompleter * CompleterRegistry::getCompleterByName(const std::string & name) {
-  if (name.empty()) {
-    return _knwonCompleters[0];
+  if (name.empty() || name == DumbCompleter::NAME) {
+    return dumbCompleter;
   }
 
-  for (int i = 0; i < KNOWN_COMPLETER_COUNT; ++i) {
-    if (_knwonCompleterNames[i] == name) {
-      return _knwonCompleters[i];
+  if (name == DuckCompleter::NAME) {
+    if (duckCompleter == nullptr) {
+      duckCompleter = new DuckCompleter();
     }
+    return duckCompleter;
   }
 
-  return _knwonCompleters[0];
+  if (name == GoogleCompleter::NAME) {
+    if (googleCompleter == nullptr) {
+      googleCompleter = new GoogleCompleter();
+    }
+    return googleCompleter;
+  }
+
+  return dumbCompleter;
 }

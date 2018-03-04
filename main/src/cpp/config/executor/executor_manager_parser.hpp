@@ -6,7 +6,7 @@
 namespace ExecutorManagerParser {
 
   template <typename StreamReader>
-  bool parse(StreamReader & reader,
+  inline bool parse(StreamReader & reader,
                        ExecutorManager & executorManager,
                        int indentation) {
     executorManager.executors.clear();
@@ -33,7 +33,7 @@ namespace ExecutorManagerParser {
   }
 
   template <typename Stream>
-  bool save(Stream & stream,
+  inline bool save(Stream & stream,
                       const ExecutorManager & executorManager,
                       int indentation) {
     for (const auto & executor : executorManager.executors) {

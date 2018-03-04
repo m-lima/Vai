@@ -6,14 +6,9 @@
 
 #include "executor.hpp"
 
-struct Execution {
-  const bool status;
-  const std::string command;
-};
-
 class ExecutorManager {
 public:
-  Execution getExecution(const std::string & name, const std::string & command) {
+  int execute(const std::string & name, const std::string & command) {
     const auto lowerName = mfl::string::toLower(name);
     auto executor = std::find_if(executors.begin(),
                                  executors.end(),
@@ -21,9 +16,11 @@ public:
                                    return executor.getName() == lowerName;
                                  });
 
-    return executor == executors.end()
-           ? Execution{false, ""}
-           : Execution{true, executor->getExecutorCommand(command)};
+    if (executor == executors.end()) {
+      return -1;
+    }
+
+    return executor->execute(command);
   }
 
   std::vector<Executor> executors;

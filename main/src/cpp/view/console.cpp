@@ -30,19 +30,19 @@ int Console::start(const std::string & executorName,
   configManager.save();
   return 0;
 
-  auto execution = configManager
-      .executorManager
-      .getExecution(executorName, command);
-  mfl::out::println("Execute [{}]: {:s}", execution.status, execution.command);
-
-  if (execution.status) {
-#ifdef WIN32
-#elif APPLE
-    system(execution.command.c_str());
-#else
-    system(execution.command.c_str());
-#endif
-  }
+//  auto execution = configManager
+//      .executorManager
+//      .getExecution(executorName, command);
+//  mfl::out::println("Execute [{}]: {:s}", execution.status, execution.command);
+//
+//  if (execution.status) {
+//#ifdef WIN32
+//#elif APPLE
+//    system(execution.command.c_str());
+//#else
+//    system(execution.command.c_str());
+//#endif
+//  }
 }
 
 
