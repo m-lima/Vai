@@ -4,6 +4,7 @@
 #include <fstream>
 
 #include <mfl/path.hpp>
+#include <mfl/exception.hpp>
 
 #ifdef VERBOSE
 #include <mfl/out.hpp>
@@ -27,7 +28,9 @@ ConfigManager::ConfigManager()
 
 void ConfigManager::load() {
   std::ifstream fileStream(cConfigFile);
-  ConfigParser::parse(fileStream, *this);
+  if (!ConfigParser::parse(fileStream, *this)) {
+    throw mfl::Exception("Failed to load config. Aborting");
+  }
 
 #ifdef VERBOSE
   std::string json((std::istreambuf_iterator<char>(fileStream)),

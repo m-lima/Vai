@@ -8,7 +8,7 @@
 
 class ExecutorManager {
 public:
-  int execute(const std::string & name, const std::string & command) {
+  inline int execute(const std::string & name, const std::string & command) const {
     const auto lowerName = mfl::string::toLower(name);
     auto executor = std::find_if(executors.begin(),
                                  executors.end(),

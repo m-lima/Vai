@@ -5,7 +5,7 @@ executors
 
  # Google should be avoided
  -name: google
-  command: open "www.google.com"
+  command: open "https://www.google.com/search?safe=off&source=vai&q=##ENTRY##"
   suggestion: http://suggestqueries.google.com/complete/search?output=toolbar&q=##ENTRY##
 
 ## Example value
