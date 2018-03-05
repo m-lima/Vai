@@ -6,14 +6,14 @@
 
 void testDuck() {
   DuckCompleter completer;
-  for (const auto & item : completer("https://duckduckgo.com/ac/?q=yo")) {
+  for (const auto & item : completer.complete("https://duckduckgo.com/ac/?q=yo")) {
     mfl::out::println("Item: {:s}", item);
   }
 }
 
 void testGoogle() {
   GoogleCompleter completer;
-  for (const auto & item : completer("http://suggestqueries.google.com/complete/search?output=toolbar&q=yo")) {
+  for (const auto & item : completer.complete("http://suggestqueries.google.com/complete/search?output=toolbar&q=yo")) {
     mfl::out::println("Item: {:s}", item);
   }
 }

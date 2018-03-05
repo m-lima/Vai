@@ -5,29 +5,23 @@
 #include "google_completer.hpp"
 
 namespace {
-  static const DumbCompleter * const dumbCompleter = new DumbCompleter();
-  static const DuckCompleter * duckCompleter = nullptr;
-  static const GoogleCompleter * googleCompleter = nullptr;
+  const DumbCompleter dumbCompleter = DumbCompleter();
+  const DuckCompleter duckCompleter = DuckCompleter();
+  const GoogleCompleter googleCompleter = GoogleCompleter();
 }
 
 const AbstractCompleter * CompleterRegistry::getCompleterByName(const std::string & name) {
   if (name.empty() || name == DumbCompleter::NAME) {
-    return dumbCompleter;
+    return &dumbCompleter;
   }
 
   if (name == DuckCompleter::NAME) {
-    if (duckCompleter == nullptr) {
-      duckCompleter = new DuckCompleter();
-    }
-    return duckCompleter;
+    return &duckCompleter;
   }
 
   if (name == GoogleCompleter::NAME) {
-    if (googleCompleter == nullptr) {
-      googleCompleter = new GoogleCompleter();
-    }
-    return googleCompleter;
+    return &googleCompleter;
   }
 
-  return dumbCompleter;
+  return &dumbCompleter;
 }

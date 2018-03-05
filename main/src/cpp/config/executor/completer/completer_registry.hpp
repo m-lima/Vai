@@ -5,4 +5,3 @@
 namespace CompleterRegistry {
   const AbstractCompleter * getCompleterByName(const std::string & name);
 }
-

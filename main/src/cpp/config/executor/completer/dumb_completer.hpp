@@ -4,11 +4,9 @@
 
 class DumbCompleter : public AbstractCompleter {
 public:
-  DumbCompleter() noexcept : AbstractCompleter(
-      [](const std::string & str) {
-        return std::vector<std::string> {str};
-      }) {}
-
   static constexpr auto NAME = "DUMB";
   inline const std::string getName() const override { return NAME; };
+  inline const std::vector<std::string> complete(const std::string & str) const override {
+    return {str};
+  }
 };

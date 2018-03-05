@@ -34,5 +34,6 @@ namespace {
   }
 }
 
-DuckCompleter::DuckCompleter() noexcept : AbstractCompleter(parse) {}
-
+const std::vector<std::string> DuckCompleter::complete(const std::string & str) const {
+  return parse(str);
+}

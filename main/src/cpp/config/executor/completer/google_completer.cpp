@@ -40,4 +40,6 @@ namespace {
   }
 }
 
-GoogleCompleter::GoogleCompleter() noexcept : AbstractCompleter(parse) {}
+const std::vector<std::string> GoogleCompleter::complete(const std::string & str) const {
+  return parse(str);
+}
