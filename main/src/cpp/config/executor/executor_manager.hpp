@@ -27,6 +27,22 @@ public:
     return executor->execute(command);
   }
 
+  inline std::vector<std::string> complete(const std::string & name,
+                                           const std::string & command) const {
+    const auto lowerName = mfl::string::toLower(name);
+    auto executor = std::find_if(executors.begin(),
+                                 executors.end(),
+                                 [&lowerName](const Executor & executor) -> bool {
+                                   return executor.getName() == lowerName;
+                                 });
+
+    if (executor == executors.end()) {
+      return {};
+    }
+
+    return executor->complete(command);
+  }
+
   inline std::vector<std::string> getPossibleExecutors(const std::string & name) const {
     std::string lowerName = mfl::string::toLower(name);
     std::vector<std::string> possible;

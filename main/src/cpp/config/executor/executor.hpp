@@ -69,5 +69,5 @@ public:
 
   int execute(const std::string &) const;
 
-  std::vector<std::string> getSuggestions(const std::string &) const;
+  std::vector<std::string> complete(const std::string &) const;
 };

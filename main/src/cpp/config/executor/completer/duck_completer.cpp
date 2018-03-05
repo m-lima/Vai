@@ -6,8 +6,11 @@
 #include <mfl/out.hpp>
 #include <curlpp/Options.hpp>
 
+#include "../encoder/url_encoder.hpp"
+
 namespace {
   const std::regex REGEX("(\\{\"phrase\":\"([^\"]+)\"\\})");
+  constexpr char URL[] = "https://duckduckgo.com/ac/?q=";
 }
 
 const std::vector<std::string> DuckCompleter::complete(const std::string & str) const {
@@ -15,7 +18,7 @@ const std::vector<std::string> DuckCompleter::complete(const std::string & str) 
   std::ostringstream stringStream;
 
   try {
-    stringStream << curlpp::options::Url(str);
+    stringStream << curlpp::options::Url(URL + URLEncoder::encode(str));
   } catch (curlpp::RuntimeError & e) {
     mfl::out::println(stderr, "Failed getting duck completion: {}", e.what());
     return list;

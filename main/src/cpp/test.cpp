@@ -29,41 +29,9 @@ void testParsers() {
   testGoogle();
 }
 
-void testStartsWith(const std::string & str) {
-  std::vector<std::string> allValues = {
-      "duck",
-      "ducker",
-      "google",
-      "dugo"
-  };
-
-  std::vector<std::string> out;
-
-  std::remove_copy_if(allValues.cbegin(), allValues.cend(), std::back_inserter(out),
-                      [&str](const auto & value) {
-                        return value.compare(0, str.size(), str);
-                      });
-//  for (const auto & v : allValues) {
-//    if (!v.compare(0, str.size(), str)) {
-//      out.emplace_back(v);
-//    }
-//  }
-
-  for (const auto & v : allValues) {
-    mfl::out::println(v);
-  }
-
-  mfl::out::println();
-
-  for (const auto & v : out) {
-    mfl::out::println(v);
-  }
-}
-
 int main() {
-//  curlpp::Cleanup myCleanup;
-//  testParsers();
+  curlpp::Cleanup curlCleanUp;
+  testParsers();
 
-  testStartsWith("du");
   return 0;
 }

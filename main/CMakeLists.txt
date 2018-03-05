@@ -57,6 +57,7 @@ list(APPEND HEADERS
     ${CPP_SRC_DIR}/config/executor/completer/duck_completer.hpp
     ${CPP_SRC_DIR}/config/executor/completer/google_completer.hpp
     ${CPP_SRC_DIR}/config/executor/completer/dumb_completer.hpp
+    ${CPP_SRC_DIR}/config/executor/encoder/url_encoder.hpp
     )
 
 list(APPEND SOURCES ${HEADERS})

@@ -8,6 +8,6 @@ int Executor::execute(const std::string & entry) const {
   return system(std::regex_replace(mCommand, ENTRY_REPLACER, entry).c_str());
 }
 
-std::vector<std::string> Executor::getSuggestions(const std::string & entry) const {
+std::vector<std::string> Executor::complete(const std::string & entry) const {
   return mCompleter->complete(entry);
 }
