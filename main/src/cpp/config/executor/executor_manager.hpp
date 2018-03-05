@@ -1,6 +1,8 @@
 #pragma once
 
 #include <algorithm>
+#include <string>
+#include <vector>
 
 #include <mfl/string.hpp>
 
@@ -8,6 +10,8 @@
 
 class ExecutorManager {
 public:
+  std::vector<Executor> executors;
+
   inline int execute(const std::string & name, const std::string & command) const {
     const auto lowerName = mfl::string::toLower(name);
     auto executor = std::find_if(executors.begin(),
@@ -23,6 +27,17 @@ public:
     return executor->execute(command);
   }
 
-  std::vector<Executor> executors;
+  inline std::vector<std::string> getPossibleExecutors(const std::string & name) const {
+    std::string lowerName = mfl::string::toLower(name);
+    std::vector<std::string> possible;
+
+    for (const auto & executor : executors) {
+      if (!executor.getName().compare(0, lowerName.size(), lowerName)) {
+        possible.emplace_back(executor.getName());
+      }
+    }
+
+    return possible;
+  }
 };
 

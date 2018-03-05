@@ -3,7 +3,7 @@
 #include "view/console.hpp"
 
 std::string concatenateArguments(int argc, char ** argv) {
-  if (argc < 2) {
+  if (argc < 3) {
     return "";
   }
   

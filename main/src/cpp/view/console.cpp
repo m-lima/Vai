@@ -10,7 +10,7 @@ namespace {
 
 // Helper function to print usage commands
   void printUsage() {
-    mfl::out::println("Usage: vai -c EXECUTOR COMMAND\n"
+    mfl::out::println("Usage: vai EXECUTOR COMMAND\n"
                           " {:<15}{:s}\n" //executor
                           " {:<15}{:s}",  //command
                       "EXECUTOR", "The executor for the command",
@@ -24,8 +24,18 @@ int Console::start(const std::string & executorName,
 
   if (executorName == HELP_COMMAND) {
     printUsage();
+    return 0;
   }
 
   ConfigManager configManager;
+
+  if (command.empty()) {
+    for (const auto & executor
+        : configManager.executorManager.getPossibleExecutors(executorName)) {
+      mfl::out::println(executor);
+    }
+    return 0;
+  }
+
   return configManager.executorManager.execute(executorName, command);
 }
