@@ -24,6 +24,6 @@ int main(int argc, char * argv[]) {
   auto command = concatenateArguments(argc, argv);
 
   Console console;
-  return console.start(argc > 1 ? argv[1] : "duck", command);
+  return console.start(argc > 1 ? argv[1] : "", command);
 }
 

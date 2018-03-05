@@ -40,6 +40,8 @@ list(APPEND SOURCES
     ${CPP_SRC_DIR}/config/executor/executor.cpp
     ${CPP_SRC_DIR}/config/executor/executor_parser.cpp
     ${CPP_SRC_DIR}/config/executor/completer/completer_registry.cpp
+    ${CPP_SRC_DIR}/config/executor/completer/duck_completer.cpp
+    ${CPP_SRC_DIR}/config/executor/completer/google_completer.cpp
     )
 
 list(APPEND HEADERS
