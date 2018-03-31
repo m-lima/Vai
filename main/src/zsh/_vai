@@ -1,12 +1,5 @@
 #compdef vai
 
-# echo "size:" $CURRENT
-#   echo "0:" $words[0]
-#   echo "1:" $words[1]
-#   echo "2:" $words[2]
-#   echo "3:" $words[3]
-#   echo "4:" $words[4]
-
 if [ -f ~/.config/vai/config ]
 then
   setopt localoptions nonomatch
@@ -20,13 +13,15 @@ then
     lines=()
     while read line
     do
-      lines+="$line"
+      lines+=$line
     done <<< $(vai -c $words[2] "${words[@]:2}")
 
-    list=( $lines )
-    disp=( -ld lines )
+    # list=( $lines )
+    # disp=( -ld lines )
 
-    compadd "$disp[@]" -Q -a list
+    # compadd "$disp[@]" -Q -a list
+    _wanted tag expl compadd "$lines"
+
   elif (( CURRENT == 2 ))
   then
     if [[ $words[2] == -* ]]
