@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <iomanip>
 #include <sstream>
 
 namespace URLEncoder {
@@ -9,8 +10,8 @@ namespace URLEncoder {
     escaped.fill('0');
     escaped << std::hex;
 
-    for (std::string::const_iterator i = str.cbegin(), n = str.cend(); i != n; ++i) {
-      std::string::value_type c = (*i);
+    for (auto i = str.cbegin(), n = str.cend(); i != n; ++i) {
+      auto c = (*i);
 
       if (std::isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~') {
         escaped << c;
