@@ -41,6 +41,35 @@ int returnError() {
   return -1;
 }
 
+int showExecutors(int argc, char * argv[]) {
+  if (argc > 3) {
+    return returnError();
+  }
+
+  ConfigManager config;
+  for (const auto & executor : config.executorManager.getPossibleExecutors(argc == 2 ? "" : argv[2])) {
+    mfl::out::println(executor);
+  }
+
+  return 0;
+}
+
+int runCommand(int argc, char * argv[]) {
+  if (argc < 4) {
+    return returnError();
+  }
+
+  auto command = concatenateArguments<1>(argc, argv);
+
+  curlpp::Cleanup curlCleanUp;
+  ConfigManager config;
+  for (const auto & completion : config.executorManager.complete(argv[2], command)) {
+    mfl::out::println(completion);
+  }
+
+  return 0;
+}
+
 int main(int argc, char * argv[]) {
   if (argc < 2) {
     return returnError();
@@ -51,45 +80,21 @@ int main(int argc, char * argv[]) {
       return returnError();
     }
 
-    if (argv[1][1] == 'h') {
-      printUsage(stdout);
-      return 0;
-    }
+    switch (argv[1][1]) {
+      case 'h':
+        printUsage(stdout);
+        return 0;
 
-    if (argv[1][1] == 'e') {
-      if (argc > 3) {
+      case 'e':
+        return showExecutors(argc, argv);
+
+      case 'c':
+        return runCommand(argc, argv);
+
+      case 'g':
+      default:
         return returnError();
-      }
-
-      ConfigManager config;
-      for (const auto & executor : config.executorManager.getPossibleExecutors(argc == 2 ? "" : argv[2])) {
-        mfl::out::println(executor);
-      }
-
-      return 0;
     }
-
-    if (argv[1][1] == 'c') {
-      if (argc < 4) {
-        return returnError();
-      }
-
-      auto command = concatenateArguments<1>(argc, argv);
-
-      curlpp::Cleanup curlCleanUp;
-      ConfigManager config;
-      for (const auto & completion : config.executorManager.complete(argv[2], command)) {
-        mfl::out::println(completion);
-      }
-
-      return 0;
-    }
-
-    if (argv[1][1] == 'g') {
-
-    }
-
-    return returnError();
   }
 
   auto command = concatenateArguments<0>(argc, argv);
