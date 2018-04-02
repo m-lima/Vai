@@ -70,4 +70,23 @@ public:
   int execute(const std::string &) const;
 
   std::vector<std::string> complete(const std::string &) const;
+
+  template <int Offset>
+  static std::string concatenateCommand(int argc, char * argv[]) {
+    if (argc < Offset + 3) {
+      return "";
+    }
+
+    if (argc == Offset + 3) {
+      return argv[Offset + 2];
+    }
+
+    std::string command = argv[Offset + 2];
+
+    for (int i = Offset + 3; i < argc; ++i) {
+      command = command + " " + argv[i];
+    }
+
+    return command;
+  }
 };

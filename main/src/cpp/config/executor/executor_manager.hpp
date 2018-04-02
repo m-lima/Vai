@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <optional>
 
 #include <mfl/string.hpp>
 
@@ -12,7 +13,11 @@ class ExecutorManager {
 public:
   std::vector<Executor> executors;
 
-  inline int execute(const std::string & name, const std::string & command) const {
+  inline std::optional<Executor> getExecutorByName(const std::string & name) const {
+    if (name.empty()) {
+      return {};
+    }
+
     const auto lowerName = mfl::string::toLower(name);
     auto executor = std::find_if(executors.begin(),
                                  executors.end(),
@@ -21,10 +26,20 @@ public:
                                  });
 
     if (executor == executors.end()) {
-      return -1;
+      return {};
     }
 
-    return executor->execute(command);
+    return std::make_optional<Executor>(*executor);
+  }
+
+  inline int execute(const std::string & name, const std::string & command) const {
+    auto executor = getExecutorByName(name);
+    
+    if (executor) {
+      executor->execute(command);
+    } else {
+      return -1;
+    }
   }
 
   inline std::vector<std::string> complete(const std::string & name,

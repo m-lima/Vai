@@ -2,8 +2,14 @@
 
 #include <string>
 
+#include "../config/config_manager.hpp"
+
 class Console {
+private:
+  ConfigManager mConfigManager;
+
 public:
-  int start(const std::string & executor = "", const std::string & command = "");
+  Console(int argc, char * argv[]);
+  int start();
 };
 

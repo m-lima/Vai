@@ -17,25 +17,6 @@ void printUsage(std::FILE * output) {
   mfl::out::println(output, "  {:<15}{}", "ARGS", "Arguments to be passed to EXECUTOR");
 }
 
-template <int Offset>
-std::string concatenateArguments(int argc, char ** argv) {
-  if (argc < Offset + 3) {
-    return "";
-  }
-
-  if (argc == Offset + 3) {
-    return argv[Offset + 2];
-  }
-
-  std::string command = argv[Offset + 2];
-
-  for (int i = Offset + 3; i < argc; ++i) {
-    command = command + " " + argv[i];
-  }
-
-  return command;
-}
-
 int returnError() {
   printUsage(stderr);
   return -1;
@@ -54,12 +35,12 @@ int showExecutors(int argc, char * argv[]) {
   return 0;
 }
 
-int runCommand(int argc, char * argv[]) {
+int showSuggestions(int argc, char * argv[]) {
   if (argc < 4) {
     return returnError();
   }
 
-  auto command = concatenateArguments<1>(argc, argv);
+  auto command = Executor::concatenateCommand<1>(argc, argv);
 
   curlpp::Cleanup curlCleanUp;
   ConfigManager config;
@@ -68,6 +49,11 @@ int runCommand(int argc, char * argv[]) {
   }
 
   return 0;
+}
+
+int showGUI(int argc, char * argv[]) {
+  mfl::out::println(stderr, "GUI not yet implemented");
+  return -1;
 }
 
 int main(int argc, char * argv[]) {
@@ -89,17 +75,16 @@ int main(int argc, char * argv[]) {
         return showExecutors(argc, argv);
 
       case 'c':
-        return runCommand(argc, argv);
+        return showSuggestions(argc, argv);
 
       case 'g':
-      default:
-        return returnError();
+        return showGUI(argc, argv);
     }
+
+    return returnError();
   }
 
-  auto command = concatenateArguments<0>(argc, argv);
-
-  Console console;
-  return console.start(argc > 1 ? argv[1] : "", command);
+  Console console(argc, argv);
+  return console.start();
 }
 

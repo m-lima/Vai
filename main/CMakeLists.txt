@@ -21,6 +21,12 @@ list(APPEND INCLUDE_DIRS "include")
 ## Dependencies
 ##
 
+if (NOT WIN32)
+  find_package(Curses REQUIRED)
+  list(APPEND INCLUDE_DIRS "${CURSES_INCLUDE_DIRS}")
+  list(APPEND LIBRARIES "${CURSES_LIBRARIES}")
+endif()
+
 add_subdirectory("${LIB_DIR}/fmt")
 list(APPEND INCLUDE_DIRS "${LIB_DIR}/fmt")
 list(APPEND LIBRARIES fmt::fmt-header-only)
