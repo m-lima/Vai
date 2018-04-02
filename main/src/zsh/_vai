@@ -8,19 +8,19 @@ then
   then
     [[ $words[2] == -* ]] && return;
 
-    local lines list disp
+    local lines list disp pos
 
+    pos=$(( CURRENT - 2 ))
     lines=()
     while read line
     do
-      lines+=$line
+      lines+=$(cut -d ' ' -f$pos- <<< $line)
     done <<< $(vai -c $words[2] "${words[@]:2}")
 
-    # list=( $lines )
-    # disp=( -ld lines )
+    list=( $lines )
+    disp=( -ld lines )
 
-    # compadd "$disp[@]" -Q -a list
-    _wanted tag expl compadd "$lines"
+    compadd "$disp[@]" -Q -a list
 
   elif (( CURRENT == 2 ))
   then
