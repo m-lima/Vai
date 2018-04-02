@@ -1,43 +1,39 @@
 #compdef vai
 
+# Reload by: unfunction _vai && autoload -U _vai
+
 if [ -f ~/.config/vai/config ]
 then
   setopt localoptions nonomatch
 
   if (( CURRENT > 2 ))
   then
+
     [[ $words[2] == -* ]] && return;
 
-    local lines list disp pos
+    local list=()
+    local pos=$(( CURRENT - 2))
 
-    pos=$(( CURRENT - 2 ))
-    lines=()
     while read line
     do
-      lines+=$(cut -d ' ' -f$pos- <<< $line)
+      list+="$(cut -d ' ' -f$pos- <<< $line)"
     done <<< $(vai -c $words[2] "${words[@]:2}")
 
-    list=( $lines )
-    disp=( -ld lines )
-
-    compadd "$disp[@]" -Q -a list
+    _describe 'list' list
 
   elif (( CURRENT == 2 ))
   then
+
     if [[ $words[2] == -* ]]
     then
-      list=( "-h" "-c" "-e" )
-      disp=( -ld lines )
 
-      compadd "$disp[@]" -Q -a list
+      _arguments '-e[List executors]' '-h[Help]' '-c[Show completions]'
+
     else
-      local lines list disp
 
-      lines=( $(vai -e $words[2]) )
-      list=( $lines )
-      disp=( -ld lines )
+      local list=( $(vai -e $words[2]) )
+      _describe 'list' list
 
-      compadd "$disp[@]" -Q -a list
     fi
   fi
 fi
